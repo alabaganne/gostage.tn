@@ -36,12 +36,9 @@
 				<div class="lg:col-span-2 bg-white border border-gray-200 rounded-3xl p-8 shadow-sm">
 					<div class="text-sm font-semibold text-blue-600 uppercase tracking-wide">Built by</div>
 					<h2 class="mt-3 text-3xl font-extrabold text-gray-900">Ala Baganne</h2>
-					<p class="mt-5 text-gray-700 leading-8 text-lg">
-						I’m a software engineer and builder focused on practical SaaS products, clean user experiences, and reliable full-stack execution. I enjoy taking an idea from rough requirements to a working deployed product: frontend, backend, database, authentication, permissions, deployment, and the final details that make a demo feel real.
-					</p>
-					<p class="mt-4 text-gray-700 leading-8 text-lg">
-						Internly is part of that builder journey: a real product-style application with public SEO-friendly pages, role-based student/company flows, company onboarding, application management, uploads, messaging, and admin controls.
-					</p>
+					<p class="mt-5 text-gray-700 leading-8 text-lg">I’m a software engineer and builder focused on practical SaaS products, clean user experiences, and reliable full-stack execution. I enjoy taking an idea from rough requirements to a working deployed product: frontend, backend, database, authentication, permissions, deployment, and the final details that make a demo feel real.</p>
+					<p class="mt-4 text-gray-700 leading-8 text-lg">Internly is part of that builder journey: a real product-style application with public SEO-friendly pages, role-based student/company flows, company onboarding, application management, uploads, messaging, and admin controls.</p>
+					<p class="mt-4 text-gray-700 leading-8 text-lg">I’m open to strong engineering opportunities, especially roles where I can build useful products end to end. If you have a product idea, an MVP to launch, or a business workflow you want turned into software, I’m also open to building for people and helping bring practical ideas to life.</p>
 
 					<div class="mt-8 grid sm:grid-cols-3 gap-4">
 						<div class="rounded-2xl bg-gray-50 p-5 border border-gray-100">
@@ -66,9 +63,7 @@
 						<a href="https://www.alabaganne.com" target="_blank" class="block hover:text-white">www.alabaganne.com</a>
 						<a href="https://www.linkedin.com/in/alabaganne/" target="_blank" class="block hover:text-white">LinkedIn / alabaganne</a>
 					</div>
-					<p class="mt-8 text-blue-100 leading-7">
-						If you’re hiring for full-stack, frontend, backend, or product-focused engineering roles, I’d be glad to connect.
-					</p>
+					<p class="mt-8 text-blue-100 leading-7">If you’re hiring for full-stack, frontend, backend, or product-focused engineering roles — or you want to build a product from an idea — I’d be glad to connect.</p>
 				</aside>
 			</div>
 		</section>

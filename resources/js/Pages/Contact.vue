@@ -16,9 +16,7 @@
 			<div class="grid lg:grid-cols-3 gap-8">
 				<div class="lg:col-span-2 bg-white rounded-3xl border border-gray-200 p-8 shadow-sm">
 					<h2 class="text-2xl font-extrabold text-gray-900">Get in touch</h2>
-					<p class="mt-3 text-gray-600 leading-7">
-						For job opportunities, freelance work, product feedback, or questions about this app, email is the fastest way to reach me.
-					</p>
+					<p class="mt-3 text-gray-600 leading-7">For job opportunities, freelance work, product feedback, MVP builds, or questions about this app, email is the fastest way to reach me.</p>
 
 					<div class="mt-8 grid sm:grid-cols-2 gap-4">
 						<a href="mailto:alabaganne9@gmail.com" class="group rounded-2xl border border-gray-200 p-5 hover:border-blue-300 hover:bg-blue-50 transition">
@@ -42,9 +40,7 @@
 
 				<aside class="rounded-3xl bg-gray-900 text-white p-8 shadow-sm">
 					<h3 class="text-2xl font-extrabold">About the developer</h3>
-					<p class="mt-4 text-gray-300 leading-7">
-						Ala Baganne is a software engineer and SaaS-focused builder who likes shipping practical full-stack products with clean interfaces, solid auth, useful role permissions, and real deployment polish.
-					</p>
+					<p class="mt-4 text-gray-300 leading-7">Ala Baganne is a software engineer and SaaS-focused builder who likes shipping practical full-stack products with clean interfaces, solid auth, useful role permissions, and real deployment polish. He is open to good engineering opportunities and to helping people turn product ideas into working software.</p>
 					<div class="mt-8 space-y-3 text-sm text-gray-300">
 						<div class="flex items-center justify-between border-b border-white/10 pb-3">
 							<span>Focus</span>
@@ -56,7 +52,7 @@
 						</div>
 						<div class="flex items-center justify-between">
 							<span>Available for</span>
-							<span class="font-semibold text-white">Good roles</span>
+							<span class="font-semibold text-white">Roles & product builds</span>
 						</div>
 					</div>
 				</aside>
