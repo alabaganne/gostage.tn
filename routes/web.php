@@ -71,7 +71,9 @@ Route::inertia('/contact', 'Contact')->name('contact');
 
 // Public internship discovery pages for SEO and unauthenticated students.
 Route::get('/internships', [InternshipController::class, 'index'])->name('internships.index');
-Route::get('/internships/{internship}', [InternshipController::class, 'show'])->name('internships.show');
+Route::get('/internships/{internship}', [InternshipController::class, 'show'])
+    ->whereNumber('internship')
+    ->name('internships.show');
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
