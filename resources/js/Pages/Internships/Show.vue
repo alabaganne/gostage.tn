@@ -97,7 +97,7 @@
 				<div class="mt-6 space-y-3">
 					<inertia-link :href="route('register')" class="btn btn-lg btn-primary w-full">Create student account</inertia-link>
 					<inertia-link :href="route('login')" class="btn btn-lg btn-dark w-full">Login</inertia-link>
-					<button @click="showAuthPrompt = false" class="btn btn-lg w-full bg-gray-100 hover:bg-gray-200 text-gray-800">Keep browsing</button>
+					<button @click="showAuthPrompt = false" class="btn btn-lg w-full bg-gray-100 hover:bg-gray-200 text-black">Keep browsing</button>
 				</div>
 			</div>
 		</div>
