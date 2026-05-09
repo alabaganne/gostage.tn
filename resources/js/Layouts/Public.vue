@@ -1,6 +1,6 @@
 <template>
 	<div class="min-h-screen bg-gray-50 text-gray-900 flex flex-col">
-		<header class="bg-white/95 backdrop-blur border-b border-gray-200 sticky top-0 z-30">
+		<header class="bg-white/95 backdrop-blur border-b border-gray-200">
 			<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
 				<inertia-link href="/" class="flex items-center space-x-3">
 					<div class="h-10 w-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm">
