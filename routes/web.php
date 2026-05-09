@@ -29,6 +29,35 @@ use Inertia\Inertia;
 
 require __DIR__.'/auth.php';
 
+
+Route::get('/robots.txt', function () {
+    return response("User-agent: *
+Allow: /
+Sitemap: " . url('/sitemap.xml') . "
+", 200)->header('Content-Type', 'text/plain');
+});
+
+Route::get('/sitemap.xml', function () {
+    $urls = collect([
+        config('app.url'),
+        config('app.url') . '/internships',
+        config('app.url') . '/about',
+        config('app.url') . '/contact',
+    ])->merge(\App\Models\Internship::latest()->take(500)->get()->map(fn ($internship) => config('app.url') . '/internships/' . $internship->id));
+
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "
+";
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "
+";
+    foreach ($urls as $url) {
+        $xml .= '  <url><loc>' . e($url) . '</loc></url>' . "
+";
+    }
+    $xml .= '</urlset>';
+
+    return response($xml, 200)->header('Content-Type', 'application/xml');
+});
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -40,14 +69,19 @@ Route::get('/', function () {
 Route::inertia('/about', 'About')->name('about');
 Route::inertia('/contact', 'Contact')->name('contact');
 
+// Public internship discovery pages for SEO and unauthenticated students.
+Route::get('/internships', [InternshipController::class, 'index'])->name('internships.index');
+Route::get('/internships/{internship}', [InternshipController::class, 'show'])->name('internships.show');
+
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 	// Profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Resources
-    Route::resource('internships', InternshipController::class);
+    Route::resource('internships', InternshipController::class)->except(['index', 'show']);
     Route::resource('companies', CompanyController::class);
     Route::resource('students', StudentController::class);
     Route::resource('fields', FieldController::class);

@@ -18,7 +18,7 @@ class CompanyPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->isAdmin() || $user->isStudent();
     }
 
     /**
@@ -30,7 +30,7 @@ class CompanyPolicy
      */
     public function view(User $user, Company $company)
     {
-        return true;
+        return $user->isAdmin() || $user->isStudent() || ($user->isCompany() && $user->userable_id === $company->id);
     }
 
     /**
@@ -41,7 +41,7 @@ class CompanyPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return $user->isAdmin();
     }
 
     /**
@@ -65,7 +65,7 @@ class CompanyPolicy
      */
     public function delete(User $user, Company $company)
     {
-        $user->id === $company->user->id || $user->isAdmin();
+        return $user->isAdmin();
     }
 
     /**

@@ -1,2 +1,3 @@
 User-agent: *
-Disallow:
+Allow: /
+Sitemap: http://187.124.184.74:3002/sitemap.xml

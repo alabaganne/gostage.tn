@@ -11,14 +11,10 @@ use App\Models\City;
 use App\Models\Company;
 use App\Models\Internship;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class InternshipController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Internship::class);
-    }
-
     public function index(Request $request)
     {
         return Inertia::render('Internships/Index', [
@@ -54,10 +50,9 @@ class InternshipController extends Controller
 					);
 				}])
 				->get(),
-			'companies' => Company::withCount(['internships' => function ($query) use ($request) {
+			'companies' => auth()->check() && auth()->user()->isCompany() ? [] : Company::withCount(['internships' => function ($query) use ($request) {
 					$query->withFilters(
 						$request->input('fields', []),
-						// $request->input('companies', []),
 						[],
 						$request->input('cities', []),
 						$request->input('search', '')
@@ -80,6 +75,8 @@ class InternshipController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Internship::class);
+
         return Inertia::render('Internships/Edit', [
             'fields' => $this->getFields()
         ]);
@@ -87,10 +84,14 @@ class InternshipController extends Controller
 
     public function store(InternshipRequest $request)
     {
+        $this->authorize('create', Internship::class);
+
         $data = $request->validated();
 		$company = auth()->user()->userable;
         $data['company_id'] = $company->id;
 		$data['city_id'] = $company->city_id;
+
+        $data['attachments'] = $this->storeAttachments($request, 'internships');
 
         Internship::create($data);
 
@@ -103,7 +104,7 @@ class InternshipController extends Controller
     public function show(Internship $internship) {
 		$user = auth()->user();
 		$application = null;
-		if($user->isStudent()) {
+		if($user && $user->isStudent()) {
 			$application = \App\Models\Application::where('internship_id', $internship->id)
 							->where('student_id', $user->userable->id)
 							->first();
@@ -127,11 +128,13 @@ class InternshipController extends Controller
 					'name' => $internship->company->user->name,
 					'email' => $internship->company->user->email,
 					'phone_number' => $internship->company->user->phone_number,
+					'website' => $internship->company->website,
 					'linkedin_profile_url' => $internship->company->user->linkedin_profile_url,
 					'city' => [
 						'name' => $internship->company->city->name,
 					]
 				],
+				'attachments' => $internship->attachments ?: [],
 				'application' => $application ? [
 					'id' => $application->id,
 					'student_id' => $application->student_id,
@@ -143,6 +146,8 @@ class InternshipController extends Controller
 
     public function edit(Internship $internship)
     {
+        $this->authorize('update', $internship);
+
         return Inertia::render('Internships/Edit', [
             'internship' => $internship,
             'fields' => $this->getFields()
@@ -151,7 +156,14 @@ class InternshipController extends Controller
 
     public function update(InternshipRequest $request, Internship $internship)
     {
-        $internship->update($request->validated());
+        $this->authorize('update', $internship);
+
+        $data = $request->validated();
+        if ($request->hasFile('attachment_files')) {
+            $data['attachments'] = $this->storeAttachments($request, 'internships');
+        }
+
+        $internship->update($data);
 
         return Redirect::route('internships.show', $internship->id)->with('toast', [
             'type' => 'update',
@@ -162,11 +174,25 @@ class InternshipController extends Controller
 
     public function destroy(Internship $internship)
     {
+        $this->authorize('delete', $internship);
+
         $internship->delete();
 
         return Redirect::route('internships.index')->with('toast', [
             'type' => 'destroy',
             'message' => 'Internship deleted successully.'
         ]);
+    }
+    private function storeAttachments(Request $request, string $directory): array
+    {
+        return collect($request->file('attachment_files', []))->map(function ($file) use ($directory) {
+            $path = $file->store($directory, 'public');
+            return [
+                'name' => $file->getClientOriginalName(),
+                'url' => Storage::disk('public')->url($path),
+                'size' => $file->getSize(),
+                'mime' => $file->getClientMimeType(),
+            ];
+        })->values()->all();
     }
 }

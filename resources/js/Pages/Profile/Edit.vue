@@ -2,7 +2,7 @@
 	<main-layout title="Profile" maxWidthClass="max-w-4xl">
 		<app-form
 			:form="form"
-			:original-data="currentUser"
+			:original-data="profile_info"
 			route-name="profile"
 			model-name="Account"
 		>
@@ -28,13 +28,20 @@
 						<label for="linkedin_profile_url">
 							Linkedin Profile URL
 						</label>
-						<input type="text" name="linkedin_profile_url" id="linkedin_profile_url" class="mt-1 form-control"  />
+						<input type="text" name="linkedin_profile_url" id="linkedin_profile_url" class="mt-1 form-control" v-model="form.linkedin_profile_url" />
 					</div>
 					<div class="col-span-3">
 						<label class="required" for="field">City</label>
-						<select name="city" id="city" class="mt-1 form-control" v-model="form.city">
+						<select name="city" id="city" class="mt-1 form-control" v-model="form.city_id">
 							<option selected value=""></option>
 							<option v-for="city in cities" :key="city.id" :value="city.id">{{ city.name }}</option>
+						</select>
+					</div>
+					<div v-if="currentUser.userable_type === 'student'" class="col-span-3">
+						<label class="required" for="field_id">Field of studies</label>
+						<select name="field_id" id="field_id" class="mt-1 form-control" v-model="form.field_id">
+							<option selected value=""></option>
+							<option v-for="field in fields" :key="field.id" :value="field.id">{{ field.name }}</option>
 						</select>
 					</div>
 				</div>
@@ -49,7 +56,7 @@
 						<label for="website">
 							Website URL
 						</label>
-						<input type="text" name="website" id="website" class="mt-1 form-control" placeholder="www.example.com" />
+						<input type="text" name="website" id="website" class="mt-1 form-control" placeholder="https://www.example.com" v-model="form.website" />
 					</div>
 					<div class="col-span-6">
 						<label for="about">About</label>
@@ -121,7 +128,11 @@ export default {
 				name: '',
 				email: '',
 				phone_number: '',
-				city: null,
+				city_id: null,
+				field_id: null,
+				linkedin_profile_url: '',
+				about: '',
+				website: '',
 				password: '',
 				password_confirmation: '',
 			}),

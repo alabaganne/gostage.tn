@@ -7,12 +7,13 @@
             <icon name="briefcase" class="h-5 w-5" />
           </div>
           <div>
-            <div class="text-xl font-extrabold tracking-tight">Qodwa</div>
-            <div class="text-xs text-gray-500 uppercase tracking-wide">Internships platform</div>
+            <div class="text-xl font-extrabold tracking-tight">Internly</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wide">Public internship platform</div>
           </div>
         </inertia-link>
 
         <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-600">
+          <inertia-link :href="route('internships.index')" class="hover:text-gray-900 transition">Browse internships</inertia-link>
           <inertia-link href="/about" class="hover:text-gray-900 transition">About</inertia-link>
           <inertia-link href="/contact" class="hover:text-gray-900 transition">Contact</inertia-link>
           <inertia-link :href="route('login')" class="hover:text-gray-900 transition">Login</inertia-link>
@@ -30,18 +31,18 @@
             Built for students, companies, and career teams
           </div>
           <h1 class="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-            Find internships with more clarity, speed, and trust.
+            Discover internships, apply faster, and connect with companies.
           </h1>
           <p class="mt-6 text-lg text-gray-600 max-w-2xl leading-8">
-            Qodwa helps students discover relevant internships, apply with confidence, and connect directly with companies — while giving employers a cleaner way to manage applicants and opportunities.
+            Internly is a public internship board and application workspace. Students can find SEO-visible opportunities on the web, while companies publish roles, review candidates, and manage communication from one focused dashboard.
           </p>
 
           <div class="mt-8 flex flex-col sm:flex-row gap-4">
-            <inertia-link :href="route('register')" class="px-6 py-3 rounded-lg bg-gray-900 text-white font-semibold text-center hover:bg-gray-800 transition shadow-sm">
-              Get started
+            <inertia-link :href="route('internships.index')" class="px-6 py-3 rounded-lg bg-gray-900 text-white font-semibold text-center hover:bg-gray-800 transition shadow-sm">
+              Browse internships
             </inertia-link>
-            <inertia-link :href="route('login')" class="px-6 py-3 rounded-lg bg-white border border-gray-200 text-gray-800 font-semibold text-center hover:bg-gray-50 transition shadow-sm">
-              Sign in
+            <inertia-link :href="route('register')" class="px-6 py-3 rounded-lg bg-white border border-gray-200 text-gray-800 font-semibold text-center hover:bg-gray-50 transition shadow-sm">
+              Create account
             </inertia-link>
           </div>
 
@@ -96,7 +97,7 @@
         <div class="max-w-3xl">
           <div class="text-sm uppercase tracking-wide text-gray-500 font-medium">How it works</div>
           <h2 class="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight">A simple workflow from discovery to decision</h2>
-          <p class="mt-4 text-gray-600 text-lg leading-8">Qodwa keeps the process straightforward: discover opportunities, apply with confidence, and manage communication in one clean experience.</p>
+          <p class="mt-4 text-gray-600 text-lg leading-8">Internly keeps the process straightforward: discover opportunities, apply with confidence, and manage communication in one clean experience.</p>
         </div>
 
         <div class="mt-10 grid md:grid-cols-3 gap-6">
@@ -147,16 +148,16 @@
       <div class="rounded-3xl bg-gray-900 text-white px-8 py-10 md:px-12 md:py-14 shadow-xl">
         <div class="max-w-3xl">
           <div class="text-sm uppercase tracking-wider text-gray-300 font-medium">Ready to launch?</div>
-          <h2 class="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight">Start using Qodwa today.</h2>
+          <h2 class="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight">Make internships easier to find and easier to manage.</h2>
           <p class="mt-4 text-gray-300 text-lg leading-8">
-            Whether you're searching for your next internship or managing opportunities for your company, Qodwa gives you a clean, focused workspace to move faster.
+            Whether you're searching for your next internship or managing opportunities for your company, Internly gives you a clean, focused workspace to move faster.
           </p>
           <div class="mt-8 flex flex-col sm:flex-row gap-4">
-            <inertia-link :href="route('register')" class="px-6 py-3 rounded-lg bg-white text-gray-900 font-semibold text-center hover:bg-gray-100 transition">
-              Create your account
+            <inertia-link :href="route('internships.index')" class="px-6 py-3 rounded-lg bg-white text-gray-900 font-semibold text-center hover:bg-gray-100 transition">
+              Browse public internships
             </inertia-link>
-            <inertia-link :href="route('login')" class="px-6 py-3 rounded-lg border border-gray-700 text-white font-semibold text-center hover:bg-gray-800 transition">
-              Login
+            <inertia-link :href="route('register')" class="px-6 py-3 rounded-lg border border-gray-700 text-white font-semibold text-center hover:bg-gray-800 transition">
+              Create account
             </inertia-link>
           </div>
         </div>
@@ -166,10 +167,11 @@
     <footer class="border-t border-gray-200 bg-white">
       <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-sm text-gray-500">
         <div>
-          <div class="font-semibold text-gray-800">Qodwa</div>
+          <div class="font-semibold text-gray-800">Internly</div>
           <div class="mt-1">A streamlined internship platform for students and companies.</div>
         </div>
         <div class="flex items-center gap-6">
+          <inertia-link :href="route('internships.index')" class="hover:text-gray-800">Internships</inertia-link>
           <inertia-link href="/about" class="hover:text-gray-800">About</inertia-link>
           <inertia-link href="/contact" class="hover:text-gray-800">Contact</inertia-link>
           <a href="https://www.linkedin.com/in/alabaganne/" target="_blank" class="hover:text-gray-800">Built by Ala Baganne</a>

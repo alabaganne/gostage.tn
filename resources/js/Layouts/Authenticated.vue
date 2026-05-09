@@ -1,5 +1,5 @@
 <template>
-	<div class="flex min-h-screen bg-gray-100">
+	<div v-if="currentUser" class="flex min-h-screen bg-gray-100">
 		<toast :toast="$page.props.toast" :popstate="$page.props.popstate" />
 
 		<sidebar :key="routeUrl()" />
@@ -8,6 +8,7 @@
 			<slot />
 		</div>
 	</div>
+	<slot v-else />
 </template>
 
 <script>
@@ -18,6 +19,8 @@ import Toast from './Partials/Toast';
 export default {
 	components: { Sidebar, Navbar, Toast },
 	mounted() {
+		if (!this.currentUser) return;
+
 		window.Echo.private('user.' + this.currentUser.id)
 			.listen('.messages', e => {
 				if(!route().current('messages.index')) {

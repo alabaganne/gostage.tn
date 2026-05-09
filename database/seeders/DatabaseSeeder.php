@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
                 'email' => 'student@example.com',
                 'password' => $password,
 				'phone_number' => '50101959',
-                'is_admin' => true
+                'is_admin' => false
             ]));
 
         $company = \App\Models\Company::factory()->create();
@@ -41,12 +41,24 @@ class DatabaseSeeder extends Seeder
             'email' => 'company@example.com',
             'password' => $password,
 			'phone_number' => '22652543',
-            'is_admin' => true
+            'is_admin' => false
         ]));
         $company->internships()->saveMany(
             \App\Models\Internship::factory(5)->create([
 				'city_id' => $company->city_id,
 			])
+        );
+
+        User::updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Platform Admin',
+                'password' => $password,
+                'phone_number' => '00000000',
+                'is_admin' => true,
+                'userable_id' => null,
+                'userable_type' => null,
+            ]
         );
     }
 }

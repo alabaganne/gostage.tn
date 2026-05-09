@@ -12,6 +12,7 @@ use App\Notifications\ApplicationSubmitted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ApplicationController extends Controller
@@ -23,13 +24,16 @@ class ApplicationController extends Controller
 
     public function index() // TODO: only students are authorized to access this route
     {
-        $field_name = Auth::user()->isStudent() ? 'student_id' : 'company_id';
+        $query = Application::with('internship', 'internship.company', 'internship.city', 'internship.field');
+
+        if (! Auth::user()->isAdmin()) {
+            $field_name = Auth::user()->isStudent() ? 'student_id' : 'company_id';
+            $query->where($field_name, Auth::user()->userable->id);
+        }
 
         return Inertia::render('Applications/Index', [
             'applications' => ApplicationResource::collection(
-                Application::with('internship', 'internship.company', 'internship.city', 'internship.field')
-                    ->where($field_name, Auth::user()->userable->id)
-                    ->latest()
+                $query->latest()
                     ->paginate(8)
             )
         ]);
@@ -49,8 +53,8 @@ class ApplicationController extends Controller
             'internship_id' => $internship->id,
             'cover_letter' => $request->cover_letter,
             'message' => $request->message,
-            'company_id' => $internship->company_id,
-			'city_id' => auth()->user()->id
+            'attachments' => $this->storeAttachments($request, 'applications'),
+            'company_id' => $internship->company_id
         ]);
 
    		$application->company->user->notify(new ApplicationSubmitted($application));
@@ -71,6 +75,7 @@ class ApplicationController extends Controller
 				'message' => $application->message,
 				'attachments' => $application->attachments,
 				'status' => $application->status,
+				'created_at' => $application->created_at->format('F d, Y'),
 				'student' => [
 					'id' => $application->student->id,
 					'name' => $application->student->user->name,
@@ -98,7 +103,12 @@ class ApplicationController extends Controller
 
     public function update(Application $application, ApplicationRequest $request)
     {
-        $application->update($request->validated());
+        $data = $request->validated();
+        if ($request->hasFile('attachment_files')) {
+            $data['attachments'] = $this->storeAttachments($request, 'applications');
+        }
+
+        $application->update($data);
 
         return Redirect::route('applications.show', $application)->with('toast', [
             'type' => 'update',
@@ -115,7 +125,9 @@ class ApplicationController extends Controller
         ]);
     }
 
-    public function reply(Application $application, Request $request) { // only companies are authorized to access this route
+    public function reply(Application $application, Request $request) {
+        $this->authorize('reply', $application);
+
         $application->update(
             $request->validate([
                 'status' => 'required|boolean'
@@ -128,5 +140,17 @@ class ApplicationController extends Controller
             'type' => 'notification',
             'message' => 'Reply sent to the applicant.'
         ]);
+    }
+    private function storeAttachments(Request $request, string $directory): array
+    {
+        return collect($request->file('attachment_files', []))->map(function ($file) use ($directory) {
+            $path = $file->store($directory, 'public');
+            return [
+                'name' => $file->getClientOriginalName(),
+                'url' => Storage::disk('public')->url($path),
+                'size' => $file->getSize(),
+                'mime' => $file->getClientMimeType(),
+            ];
+        })->values()->all();
     }
 }

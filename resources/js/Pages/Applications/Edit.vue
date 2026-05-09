@@ -38,7 +38,7 @@
 					<label class="block text-sm font-medium text-gray-700">
 						Attachments
 					</label>
-					<files-upload class="mt-1" />
+					<files-upload class="mt-1" v-model="form.attachment_files" input-id="applications-attachments" />
 					<p class="mt-1 text-gray-500 text-sm font-light">You may attach up to 10 files under the size of <span class="font-semibold">10MB</span> each. Include your résumé, work samples or other documents to support your application.</p>
 				</div>
 			</div>

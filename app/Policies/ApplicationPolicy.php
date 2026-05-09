@@ -20,12 +20,13 @@ class ApplicationPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->isStudent() || $user->isCompany();
+        return $user->isAdmin() || $user->isStudent() || $user->isCompany();
     }
 
     public function belongsTo(User $user, Application $application)
     {
-        return ($user->isStudent() && $user->userable->id === $application->student_id)
+        return $user->isAdmin()
+            || ($user->isStudent() && $user->userable->id === $application->student_id)
             || ($user->isCompany() && $user->userable->id === $application->company_id);
     }
 
@@ -65,7 +66,12 @@ class ApplicationPolicy
      */
     public function update(User $user, Application $application)
     {
-        return $this->belongsTo($user, $application) && $application->status === null;
+        return $user->isAdmin() || ($user->isStudent() && $user->userable_id === $application->student_id && $application->status === null);
+    }
+
+    public function reply(User $user, Application $application)
+    {
+        return $user->isAdmin() || ($user->isCompany() && $user->userable_id === $application->company_id);
     }
 
     /**
@@ -77,7 +83,7 @@ class ApplicationPolicy
      */
     public function delete(User $user, Application $application)
     {
-        return $user->isStudent() && $user->userable->id === $application->student_id && $application->status === null;
+        return $user->isAdmin() || ($user->isStudent() && $user->userable->id === $application->student_id && $application->status === null);
     }
 
     /**

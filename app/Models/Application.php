@@ -22,6 +22,7 @@ class Application extends Model
     ];
 
     protected $casts = [
+        'attachments' => 'array',
         'status' => 'boolean'
     ];
 

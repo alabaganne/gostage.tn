@@ -13,7 +13,7 @@ class ApplicationRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->isStudent();
+        return auth()->user()->isStudent() || auth()->user()->isAdmin();
     }
 
     /**
@@ -27,6 +27,8 @@ class ApplicationRequest extends FormRequest
             'cover_letter' => 'required|min:200',
             'message' => 'nullable|min:100',
             'attachments' => 'nullable',
+            'attachment_files' => 'nullable|array|max:10',
+            'attachment_files.*' => 'file|max:10240',
         ];
     }
 }

@@ -16,6 +16,7 @@
 			</inertia-link>
 
 			<inertia-link
+				v-if="['student', 'company'].includes(currentUser.userable_type)"
 				:href="route('messages.index')"
 				class="p-2 hover:bg-gray-100 rounded-full"
 			>
@@ -49,7 +50,7 @@
 							</div>
 						</div>
 						<breeze-dropdown-link v-if="currentUser.is_admin" href="#">Manage Users</breeze-dropdown-link>
-						<breeze-dropdown-link :href="route('profile.edit')">My Account</breeze-dropdown-link>
+						<breeze-dropdown-link :href="route('profile.show')">My Profile</breeze-dropdown-link>
 						<breeze-dropdown-link :href="route('logout')" as="button" method="POST">Logout</breeze-dropdown-link>
 				</template>
 			</breeze-dropdown>

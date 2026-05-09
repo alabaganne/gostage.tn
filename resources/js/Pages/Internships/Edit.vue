@@ -34,7 +34,7 @@
 						<label class="block text-sm font-medium text-gray-700">
 							Attachments
 						</label>
-						<files-upload class="mt-1" />
+						<files-upload class="mt-1" v-model="form.attachment_files" input-id="internships-attachments" />
 						<p class="mt-1 text-gray-500 text-sm font-light">You may attach up to 10 files under the size of <span class="font-semibold">10MB</span> each.</p>
 					</div>
 				</div>
@@ -71,7 +71,8 @@ export default {
 			form: this.$inertia.form({
 				title: "",
 				description: "",
-				attachments: "",
+				attachments: [],
+				attachment_files: [],
 				closing_at: "",
 				field_id: null,
 			}),

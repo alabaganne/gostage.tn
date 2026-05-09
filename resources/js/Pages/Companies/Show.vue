@@ -1,12 +1,15 @@
 <template>
 	<main-layout title="Company" subtitle="View">
 		<template v-slot:header-right>
-			<inertia-link :href="route('internships.create')" class="btn btn-lg btn-primary">Add Internship -></inertia-link>
+			<inertia-link v-if="currentUser.userable_type === 'company' && currentUser.userable_id === company.id" :href="route('internships.create')" class="btn btn-lg btn-primary">Add Internship -></inertia-link>
 		</template>
 		<div class="lg:grid lg:grid-cols-3 gap-6">
 			<div class="col-span-1">
 				<card class="p-6">
 					<div>
+						<div v-if="company.image" class="mb-5 h-24 w-24 overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm">
+							<img :src="`/storage/${company.image}`" :alt="`${company.name} logo`" class="h-full w-full object-cover" />
+						</div>
 						<h1 class="text-3xl font-extrabold">{{ company.name }}</h1>
 						<div class="mt-6 space-y-4">
 							<div class="flex items-center">
@@ -29,14 +32,15 @@
 					</div>
 					<p class="mt-6 text-gray-700 text-lg leading-8">{{ company.about }}</p>
 					<div class="mt-8 flex justify-between">
-						<button @click="selectedUser = company" class="btn btn-secondary">
+						<button v-if="currentUser.id !== company.user_id && currentUser.userable_type === 'student'" @click="selectedUser = company" class="btn btn-secondary">
 							Send Message
 						</button>
-						<div class="flex">
+						<div v-if="currentUser.is_admin || currentUser.id === company.user_id" class="flex">
 							<inertia-link :href="route('companies.edit', company)" class="btn btn-dark">
 								Edit
 							</inertia-link>
 							<delete-modal
+								v-if="currentUser.is_admin"
 								title="Delete Company"
 								message="Are you sure you want to delete this company? All the data related to it will be permanently deleted. This action cannot be undone."
 								:url="route('companies.destroy', company)"

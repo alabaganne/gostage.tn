@@ -65,7 +65,7 @@ export default {
 					value: this.students_count,
 					icon: 'user-group',
 					link: route('students.index'),
-					show: true,
+					show: this.currentUser.is_admin,
 				},
 				{
 					label: 'Companies',

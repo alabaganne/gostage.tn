@@ -13,6 +13,10 @@ use Inertia\Inertia;
 
 class StudentController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Student::class);
+    }
     /**
      * Display a listing of the resource.
      *

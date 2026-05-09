@@ -42,7 +42,16 @@ class InternshipPolicy
      */
     public function create(User $user)
     {
-        return $user->isCompany();
+        if (! $user->isCompany()) {
+            return false;
+        }
+
+        $company = $user->userable;
+
+        return $company
+            && filled($company->about)
+            && filled($company->website)
+            && filled($company->city_id);
     }
 
     /**
@@ -54,7 +63,7 @@ class InternshipPolicy
      */
     public function isOwner(User $user, Internship $internship)
     {
-        return $user->isCompany() && $user->userable->id === $internship->company_id;
+        return $user->isAdmin() || ($user->isCompany() && $user->userable->id === $internship->company_id);
     }
 
     /**

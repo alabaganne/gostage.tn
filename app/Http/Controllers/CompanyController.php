@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 class CompanyController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Company::class);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -82,6 +86,7 @@ class CompanyController extends Controller
 				'name' => $company->user->name,
 				'email' => $company->user->email,
 				'phone_number' => $company->user->phone_number,
+				'image' => $company->user->image,
 				'about' => $company->about,
 				'website' => $company->website,
 				'city' => [
@@ -106,6 +111,7 @@ class CompanyController extends Controller
 				'name' => $company->user->name,
 				'email' => $company->user->email,
 				'phone_number' => $company->user->phone_number,
+				'image' => $company->user->image,
 				'website' => $company->website,
 				'about' => $company->about,
 				'city_id' => $company->city_id,

@@ -24,6 +24,7 @@ class Internship extends Model
     protected $dates = ['created_at', 'updated_at', 'closing_at'];
 
     protected $casts = [
+        'attachments' => 'array',
         'closing_at' => 'datetime:Y-m-d'
     ];
 

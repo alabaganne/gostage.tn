@@ -37,6 +37,8 @@ class InternshipRequest extends FormRequest
             'field_id' => 'required',
             'closing_at' => 'required|date',
             'attachments' => 'nullable',
+            'attachment_files' => 'nullable|array|max:10',
+            'attachment_files.*' => 'file|max:10240',
         ];
     }
 }

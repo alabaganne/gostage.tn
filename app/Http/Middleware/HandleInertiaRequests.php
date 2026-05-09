@@ -47,7 +47,7 @@ class HandleInertiaRequests extends Middleware
                     'email' => $user->email,
                     'phone_number' => $user->phone_number,
                     'image' => $user->image,
-					'is_admin' => $user->is_admin,
+					'is_admin' => $user->isAdmin(),
                     'userable_id' => $user->userable_id,
                     'userable_type' => $user->userable_type,
                     'likes_count' => $user->isStudent() ? $user->userable->likes->count() : null,

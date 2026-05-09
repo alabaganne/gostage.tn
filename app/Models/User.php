@@ -62,7 +62,7 @@ class User extends Authenticatable
     }
 
     public function isAdmin() {
-        return $this->is_admin;
+        return (bool) $this->is_admin && !$this->isCompany() && !$this->isStudent();
     }
 
     public function sentMessages() {

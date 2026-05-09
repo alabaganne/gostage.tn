@@ -5,6 +5,13 @@
         {{ status }}
     </div>
 
+    <p class="mb-4 text-xs text-gray-500 leading-relaxed">
+        <strong>Test accounts:</strong><br>
+        Platform admin: <strong>admin@example.com</strong> / <strong>password</strong><br>
+        Company: <strong>company@example.com</strong> / <strong>password</strong><br>
+        Student: <strong>student@example.com</strong> / <strong>password</strong>
+    </p>
+
     <form spellcheck="false" autocomplete="off" @submit.prevent="submit">
         <div>
             <breeze-label for="email" value="Email" />
@@ -64,8 +71,8 @@
         data() {
             return {
                 form: this.$inertia.form({
-                    email: '',
-                    password: '',
+                    email: 'admin@example.com',
+                    password: 'password',
                     remember: false
                 })
             }

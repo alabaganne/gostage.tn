@@ -18,7 +18,7 @@ class InternshipResource extends JsonResource
     public function toArray($request)
     {
 		$user = auth()->user();
-		$student = $user->isStudent() ? $user->userable : null;
+		$student = $user && $user->isStudent() ? $user->userable : null;
 
 		$application = $student ? Application::where('student_id', $student->id)
 									->where('internship_id', $this->id)
@@ -31,6 +31,7 @@ class InternshipResource extends JsonResource
 			'closing_at' => $this->closing_at->format('F d, Y'),
 			'created_at' => $this->created_at->diffForHumans(),
 			'company' => [
+				'id' => $this->company->id,
 				'name' => $this->company->user->name
 			],
 			'city' => [
@@ -39,6 +40,7 @@ class InternshipResource extends JsonResource
 			'field' => [
 				'name' => $this->field->name,
 			],
+			'attachments' => $this->attachments ?: [],
 			'application' => $application ? [
 				'created_at' => $application->created_at->format('F d, Y')
 			] : null,

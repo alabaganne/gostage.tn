@@ -53,7 +53,7 @@ export default {
 	},
 	computed: {
 		isStudent() {
-			return this.currentUser.userable_type === 'student';
+			return this.currentUser && this.currentUser.userable_type === 'student';
 		}
 	},
 

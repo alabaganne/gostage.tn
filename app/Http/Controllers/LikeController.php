@@ -11,6 +11,7 @@ class LikeController extends Controller // only students are authorized to acces
 {
     public function index()
     {
+        abort_unless(auth()->user()->isStudent(), 403);
         return Inertia::render('Internships/Likes', [
             'likes' => InternshipResource::collection(auth()->user()->userable->likes)
         ]);
@@ -18,6 +19,7 @@ class LikeController extends Controller // only students are authorized to acces
 
     public function store(Internship $internship)
     {
+        abort_unless(auth()->user()->isStudent(), 403);
         auth()->user()->userable->likes()->toggle($internship);
 
         return response()->json();

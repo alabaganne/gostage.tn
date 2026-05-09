@@ -29,7 +29,7 @@
 					</div>
 				</div>
 
-				<div class="p-6 w-full border-t">
+				<div v-if="companies.length" class="p-6 w-full border-t">
 					<label>Companies</label>
 					<div class="mt-3 space-y-2">
 						<template v-for="company in companies" :key="company.id">

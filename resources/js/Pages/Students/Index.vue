@@ -1,7 +1,7 @@
 <template>
 	<main-layout title="Students" subtitle="Profiles">
 		<template v-slot:header-right>
-				<inertia-link :href="route('students.create')" class="btn btn-lg btn-primary">Add Student -></inertia-link>
+				<inertia-link v-if="currentUser.is_admin" :href="route('students.create')" class="btn btn-lg btn-primary">Add Student -></inertia-link>
 		</template>
 		<div v-if="students.data.length > 0">
 			<div class="grid c-grid-col-sm gap-4">

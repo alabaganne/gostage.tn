@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Models\Skill;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SkillController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(EnsureUserIsAdmin::class);
+    }
     /**
      * Display a listing of the resource.
      *

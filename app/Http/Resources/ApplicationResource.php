@@ -21,6 +21,9 @@ class ApplicationResource extends JsonResource
         $data = [
             'id' => $this->id,
             'status' => $this->status,
+            'cover_letter' => $this->cover_letter,
+            'message' => $this->message,
+            'attachments' => $this->attachments ?: [],
             'internship' => [
                 'id' => $this->internship->id,
                 'title' => $this->internship->title,
