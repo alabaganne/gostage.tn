@@ -260,7 +260,7 @@ export default {
       ],
       studentBenefits: [
         {
-          icon: "filter",
+          icon: "search",
           title: "Better discovery",
           description: "Browse internships in a way that feels curated instead of chaotic.",
         },
