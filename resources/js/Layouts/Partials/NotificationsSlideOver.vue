@@ -71,6 +71,8 @@ export default {
 		}
 	},
 	mounted() {
+		if (!window.Echo) return;
+
 		window.Echo.private('user.' + this.currentUser.id)
 			.notification(notification => {
 				this.$page.props.toast = notification.toast;

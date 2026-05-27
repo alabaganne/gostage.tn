@@ -68,6 +68,8 @@ export default {
 			form: this.$inertia.form({
 				cover_letter: "",
 				message: "",
+				attachments: [],
+				attachment_files: [],
 			})
 		}
 	}

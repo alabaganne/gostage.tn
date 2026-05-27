@@ -2,18 +2,13 @@
   <div class="min-h-screen bg-gray-50 text-gray-900">
     <header class="border-b border-gray-200 bg-white/95 backdrop-blur">
       <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <inertia-link href="/" class="flex items-center space-x-3">
-          <div class="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm border border-blue-100">
-            <icon name="briefcase" class="h-5 w-5" />
-          </div>
-          <div>
-            <div class="text-xl font-extrabold tracking-tight">Internly</div>
-            <div class="text-xs text-gray-500 uppercase tracking-wide">Public internship platform</div>
-          </div>
+        <inertia-link href="/" class="flex items-center">
+          <brand-logo tagline="Public internship platform" />
         </inertia-link>
 
         <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-600">
           <inertia-link :href="route('internships.index')" class="hover:text-gray-900 transition">Browse internships</inertia-link>
+          <inertia-link :href="route('blog.index')" class="hover:text-gray-900 transition">Blog</inertia-link>
           <inertia-link href="/about" class="hover:text-gray-900 transition">About</inertia-link>
           <inertia-link href="/contact" class="hover:text-gray-900 transition">Contact</inertia-link>
           <inertia-link :href="route('login')" class="hover:text-gray-900 transition">Login</inertia-link>
@@ -25,7 +20,7 @@
     </header>
 
     <section class="max-w-7xl mx-auto px-6 pt-16 pb-12 lg:pt-24 lg:pb-20">
-      <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <div class="max-w-4xl">
         <div>
           <div class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-medium border border-blue-100">
             Built for students, companies, and career teams
@@ -46,35 +41,19 @@
             </inertia-link>
           </div>
 
-          <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <card v-for="stat in stats" :key="stat.label">
-              <div class="p-5">
-                <div class="text-sm text-gray-500 uppercase tracking-wide">{{ stat.label }}</div>
-                <div class="mt-2 text-3xl font-extrabold">{{ stat.value }}</div>
-              </div>
-            </card>
-          </div>
         </div>
 
-        <div class="lg:pl-8">
-          <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div class="p-6 border-b bg-gray-50">
-              <div class="text-sm uppercase text-gray-500 font-medium">Platform overview</div>
-              <div class="mt-1 text-2xl font-extrabold">A cleaner internship experience</div>
-            </div>
-            <div class="p-6 space-y-4">
-              <div v-for="feature in heroFeatures" :key="feature.title" class="flex items-start space-x-4 p-4 rounded-xl bg-gray-50 border border-gray-100">
-                <div class="h-11 w-11 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-                  <icon :name="feature.icon" class="h-5 w-5" />
-                </div>
-                <div>
-                  <div class="font-semibold text-gray-900">{{ feature.title }}</div>
-                  <p class="mt-1 text-sm text-gray-600 leading-6">{{ feature.description }}</p>
-                </div>
-              </div>
-            </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-8 lg:pb-12">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <card v-for="stat in stats" :key="stat.label">
+          <div class="p-5 md:p-6 text-center">
+            <div class="text-sm text-gray-500 uppercase tracking-wide">{{ stat.label }}</div>
+            <div class="mt-2 text-3xl md:text-4xl font-extrabold">{{ stat.value }}</div>
           </div>
-        </div>
+        </card>
       </div>
     </section>
 
@@ -144,7 +123,33 @@
       </div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-6 pb-20">
+    <section class="bg-white border-y border-gray-200">
+      <div class="max-w-7xl mx-auto px-6 py-16">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div class="max-w-3xl">
+            <div class="text-sm uppercase tracking-wide text-gray-500 font-medium">Internship resources</div>
+            <h2 class="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight">Guides to help students apply and companies hire.</h2>
+            <p class="mt-4 text-gray-600 text-lg leading-8">Read practical SEO-friendly guides about internship search, applications, hiring interns, and choosing the right internship platform.</p>
+          </div>
+          <inertia-link :href="route('blog.index')" class="px-5 py-3 rounded-xl bg-gray-900 text-white font-semibold text-center hover:bg-gray-800 transition">Visit the blog</inertia-link>
+        </div>
+
+        <div class="mt-10 grid md:grid-cols-3 gap-6">
+          <card v-for="post in featuredPosts" :key="post.slug">
+            <div class="p-6">
+              <div class="text-sm text-blue-600 font-semibold">{{ post.category }}</div>
+              <h3 class="mt-3 text-xl font-bold leading-tight">
+                <inertia-link :href="route('blog.show', post.slug)" class="hover:text-blue-700">{{ post.title }}</inertia-link>
+              </h3>
+              <p class="mt-3 text-gray-600 leading-7">{{ post.excerpt }}</p>
+              <inertia-link :href="route('blog.show', post.slug)" class="inline-block mt-5 font-semibold text-blue-700 hover:text-blue-800">Read guide →</inertia-link>
+            </div>
+          </card>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 py-20">
       <div class="rounded-3xl bg-gray-900 text-white px-8 py-10 md:px-12 md:py-14 shadow-xl">
         <div class="max-w-3xl">
           <div class="text-sm uppercase tracking-wider text-gray-300 font-medium">Ready to launch?</div>
@@ -172,6 +177,7 @@
         </div>
         <div class="flex items-center gap-6">
           <inertia-link :href="route('internships.index')" class="hover:text-gray-800">Internships</inertia-link>
+          <inertia-link :href="route('blog.index')" class="hover:text-gray-800">Blog</inertia-link>
           <inertia-link href="/about" class="hover:text-gray-800">About</inertia-link>
           <inertia-link href="/contact" class="hover:text-gray-800">Contact</inertia-link>
           <a href="https://www.linkedin.com/in/alabaganne/" target="_blank" class="hover:text-gray-800">Built by Ala Baganne</a>
@@ -198,21 +204,24 @@ export default {
         { label: "Open roles", value: "250+" },
         { label: "Applications", value: "5k+" },
       ],
-      heroFeatures: [
+      featuredPosts: [
         {
-          icon: "briefcase",
-          title: "Discover relevant opportunities",
-          description: "Browse internships across technology, business, design, and engineering with a more structured, focused experience.",
+          slug: "how-to-find-an-internship-as-a-student",
+          category: "Students",
+          title: "How to find an internship as a student",
+          excerpt: "A practical guide to finding internships, filtering real opportunities, and applying with a stronger profile.",
         },
         {
-          icon: "user-group",
-          title: "Apply and track with less friction",
-          description: "Students can move from exploration to application without getting lost in scattered forms and unclear processes.",
+          slug: "best-internship-application-tips",
+          category: "Students",
+          title: "Best internship application tips for students",
+          excerpt: "Simple ways to make your internship application clearer, more relevant, and easier for companies to review.",
         },
         {
-          icon: "mail",
-          title: "Connect directly with companies",
-          description: "Built-in communication and applicant management make the hiring flow simpler for both sides.",
+          slug: "how-companies-can-hire-interns-faster",
+          category: "Companies",
+          title: "How companies can hire interns faster",
+          excerpt: "A hiring workflow for companies that want better internship candidates without a messy application process.",
         },
       ],
       audiences: [
@@ -251,7 +260,7 @@ export default {
       ],
       studentBenefits: [
         {
-          icon: "search",
+          icon: "filter",
           title: "Better discovery",
           description: "Browse internships in a way that feels curated instead of chaotic.",
         },

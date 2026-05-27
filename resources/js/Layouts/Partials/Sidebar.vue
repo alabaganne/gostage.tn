@@ -1,7 +1,7 @@
 <template>
 	<aside id="sidebar" v-show="sidebarActive" class="w-80 bg-gray-800 text-white flex-shrink-0 fixed top-0 min-h-screen lg:relative z-50">
 		<div class="h-20 px-7 flex justify-between items-center border-gray-700">
-			<span class="text-3xl font-semibold">Internly</span>
+			<brand-logo dark />
 			<button @click="closeSidebar" class="text-gray-200 p-1 rounded-lg hover:bg-gray-700 lg:hidden">
 				<icon name="x" class="h-5 w-5" />
 			</button>

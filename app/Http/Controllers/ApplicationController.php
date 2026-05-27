@@ -53,7 +53,9 @@ class ApplicationController extends Controller
             'internship_id' => $internship->id,
             'cover_letter' => $request->cover_letter,
             'message' => $request->message,
-            'attachments' => $this->storeAttachments($request, 'applications'),
+            'attachments' => $request->hasFile('attachment_files')
+                ? $this->storeAttachments($request, 'applications')
+                : [],
             'company_id' => $internship->company_id
         ]);
 
@@ -73,7 +75,7 @@ class ApplicationController extends Controller
 				'name' => $application->name,
 				'cover_letter' => $application->cover_letter,
 				'message' => $application->message,
-				'attachments' => $application->attachments,
+				'attachments' => $application->attachments ?: [],
 				'status' => $application->status,
 				'created_at' => $application->created_at->format('F d, Y'),
 				'student' => [
@@ -105,8 +107,15 @@ class ApplicationController extends Controller
     {
         $data = $request->validated();
         if ($request->hasFile('attachment_files')) {
-            $data['attachments'] = $this->storeAttachments($request, 'applications');
+            $data['attachments'] = array_merge(
+                $application->attachments ?: [],
+                $this->storeAttachments($request, 'applications')
+            );
+        } else {
+            unset($data['attachments']);
         }
+
+        unset($data['attachment_files']);
 
         $application->update($data);
 

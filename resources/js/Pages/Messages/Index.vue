@@ -26,6 +26,8 @@ export default {
 			}
 		}
 
+		if (!window.Echo) return;
+
 		window.Echo.private('user.' + this.currentUser.id)
 			.listen('.messages', message => {
 				console.log(message);

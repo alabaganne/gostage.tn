@@ -19,7 +19,7 @@ import Toast from './Partials/Toast';
 export default {
 	components: { Sidebar, Navbar, Toast },
 	mounted() {
-		if (!this.currentUser) return;
+		if (!this.currentUser || !window.Echo) return;
 
 		window.Echo.private('user.' + this.currentUser.id)
 			.listen('.messages', e => {

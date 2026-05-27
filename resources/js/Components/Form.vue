@@ -70,10 +70,19 @@ export default {
 		submit() {
 			let submitUrl = this.editing ? this.route(`${this.routeName}.update`, { ...this.routeParams }) : this.route(`${this.routeName}.store`, { ...this.routeParams });
 			let submitMethod = this.editing ? 'put' : 'post';
+			let options = {
+				preserveScroll: true,
+				forceFormData: true,
+			};
 
-			this.form[submitMethod](submitUrl, {
-				preserveScroll: true
-			});
+			// PHP/Laravel does not reliably parse multipart bodies sent with PUT/PATCH.
+			// When editing a form that contains new files, send POST and spoof PUT instead.
+			if (this.editing && this.form.attachment_files && this.form.attachment_files.length) {
+				this.form._method = 'put';
+				submitMethod = 'post';
+			}
+
+			this.form[submitMethod](submitUrl, options);
 		},
 		async reset() {
 			if(this.originalData) {

@@ -61,9 +61,11 @@ const app = createApp({
 	.use(store);
 
 import Icon from "./Shared/Icon";
+import BrandLogo from "./Shared/BrandLogo";
 import Card from "./Shared/Card";
 import Table from "./Shared/Table";
 app.component('Icon', Icon);
+app.component('BrandLogo', BrandLogo);
 app.component('Card', Card);
 app.component('AppTable', Table);
 

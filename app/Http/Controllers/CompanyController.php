@@ -29,6 +29,7 @@ class CompanyController extends Controller
 				->through(function ($company) {
 					return [
 						'id' => $company->id,
+						'user_id' => $company->user->id,
 						'name' => $company->user->name,
 						'email' => $company->user->email,
 						'phone_number' => $company->user->phone_number,

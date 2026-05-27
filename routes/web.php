@@ -38,12 +38,16 @@ Sitemap: " . url('/sitemap.xml') . "
 });
 
 Route::get('/sitemap.xml', function () {
+    $blogPosts = collect(config('internly_blog'))->map(fn ($post) => config('app.url') . '/blog/' . $post['slug']);
+
     $urls = collect([
         config('app.url'),
         config('app.url') . '/internships',
+        config('app.url') . '/blog',
         config('app.url') . '/about',
         config('app.url') . '/contact',
-    ])->merge(\App\Models\Internship::latest()->take(500)->get()->map(fn ($internship) => config('app.url') . '/internships/' . $internship->id));
+    ])->merge($blogPosts)
+        ->merge(\App\Models\Internship::latest()->take(500)->get()->map(fn ($internship) => config('app.url') . '/internships/' . $internship->id));
 
     $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "
 ";
@@ -68,6 +72,22 @@ Route::get('/', function () {
 })->name('home');
 Route::inertia('/about', 'About')->name('about');
 Route::inertia('/contact', 'Contact')->name('contact');
+
+Route::get('/blog', function () {
+    return Inertia::render('Blog/Index', [
+        'posts' => config('internly_blog'),
+    ]);
+})->name('blog.index');
+
+Route::get('/blog/{slug}', function (string $slug) {
+    $post = collect(config('internly_blog'))->firstWhere('slug', $slug);
+
+    abort_unless($post, 404);
+
+    return Inertia::render('Blog/Show', [
+        'post' => $post,
+    ]);
+})->name('blog.show');
 
 // Public internship discovery pages for SEO and unauthenticated students.
 Route::get('/internships', [InternshipController::class, 'index'])->name('internships.index');

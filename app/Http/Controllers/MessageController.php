@@ -7,6 +7,7 @@ use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -85,13 +86,26 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
+		$request->validate([
+			'to_id' => ['required', 'integer', 'exists:users,id'],
+			'text' => ['required', 'string', 'max:5000'],
+		]);
+
 		$message = Message::create([
 			'from_id' => auth()->user()->id,
 			'to_id' => $request->to_id,
 			'text' => $request->text,
 		]);
 
-		broadcast(new NewMessage($request->to_id, $message));
+		try {
+			broadcast(new NewMessage($request->to_id, $message));
+		} catch (\Throwable $exception) {
+			Log::warning('Realtime message broadcast failed; message was still saved.', [
+				'message_id' => $message->id,
+				'to_id' => $request->to_id,
+				'error' => $exception->getMessage(),
+			]);
+		}
 
         return Redirect::route('messages.index', [ 'user_id' => $request->to_id ]);
     }

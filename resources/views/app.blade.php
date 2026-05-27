@@ -60,6 +60,43 @@
                     'industry' => $fieldName ?: 'Internship',
                     'url' => $canonical,
                 ];
+            } elseif (request()->routeIs('blog.index')) {
+                $title = 'Internship blog - Student and company guides | Internly';
+                $description = 'Read Internly guides about finding internships, applying better, hiring interns, and managing internship applications.';
+                $keywords = 'internship blog, internship guides, student internship advice, hire interns, internship platform';
+                $structuredData = [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'Blog',
+                    'name' => 'Internly Blog',
+                    'url' => $canonical,
+                    'description' => $description,
+                ];
+            } elseif (request()->routeIs('blog.show') && request()->route('slug')) {
+                $post = collect(config('internly_blog'))->firstWhere('slug', request()->route('slug'));
+                if ($post) {
+                    $title = $post['title'] . ' | Internly Blog';
+                    $description = $post['description'];
+                    $keywords = $post['keywords'];
+                    $type = 'article';
+                    $structuredData = [
+                        '@context' => 'https://schema.org',
+                        '@type' => 'Article',
+                        'headline' => $post['title'],
+                        'description' => $description,
+                        'datePublished' => $post['published_at'],
+                        'dateModified' => $post['published_at'],
+                        'author' => [
+                            '@type' => 'Person',
+                            'name' => 'Ala Baganne',
+                            'url' => 'https://www.alabaganne.com',
+                        ],
+                        'publisher' => [
+                            '@type' => 'Organization',
+                            'name' => 'Internly',
+                        ],
+                        'mainEntityOfPage' => $canonical,
+                    ];
+                }
             }
         @endphp
 

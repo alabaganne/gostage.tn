@@ -51,8 +51,10 @@ export default {
 	},
 	methods: {
 		sendMessage() {
+			if (!this.user || (!this.user.user_id && !this.user.id) || this.message.trim() === '') return;
+
 			this.$inertia.post(route('messages.store'), {
-				to_id: this.user.user_id,
+				to_id: this.user.user_id || this.user.id,
 				text: this.message
 			})
 		},
