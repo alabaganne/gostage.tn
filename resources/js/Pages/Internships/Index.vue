@@ -1,11 +1,19 @@
 <template>
 	<public-layout v-if="!currentUser">
-		<section class="bg-white border-b border-gray-200">
-			<div class="max-w-7xl mx-auto px-6 py-12 lg:py-16">
-				<div class="max-w-3xl">
-					<div class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-semibold border border-blue-100">Public internship board</div>
-					<h1 class="mt-5 text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">Find your next internship on Internly.</h1>
-					<p class="mt-5 text-lg text-gray-600 leading-8">Browse real internship opportunities from companies, filter by field or city, and create a free account when you're ready to apply.</p>
+		<section class="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-500 text-white">
+			<div class="absolute inset-0 opacity-20">
+				<div class="absolute -top-24 -right-20 h-72 w-72 rounded-full bg-white blur-3xl"></div>
+				<div class="absolute bottom-0 left-10 h-48 w-48 rounded-full bg-cyan-200 blur-3xl"></div>
+			</div>
+			<div class="relative max-w-7xl mx-auto px-6 py-16 lg:py-20">
+				<div class="max-w-4xl">
+					<div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/15 text-white text-sm font-semibold border border-white/25 shadow-sm backdrop-blur">Public internship board</div>
+					<h1 class="mt-6 text-4xl md:text-6xl font-extrabold tracking-tight leading-tight text-white">Find your next internship on Internly.</h1>
+					<p class="mt-6 text-lg md:text-xl text-blue-50 leading-8 max-w-3xl">Browse real internship opportunities from companies, filter by field or city, and create a free account when you're ready to apply.</p>
+					<div class="mt-8 flex flex-col sm:flex-row gap-3">
+						<inertia-link :href="route('register')" class="px-5 py-3 rounded-xl bg-white text-blue-700 font-bold text-center shadow-lg hover:bg-blue-50 transition">Create free account</inertia-link>
+						<inertia-link :href="route('login')" class="px-5 py-3 rounded-xl bg-blue-900/25 text-white font-bold text-center border border-white/25 hover:bg-blue-900/35 transition">Login</inertia-link>
+					</div>
 				</div>
 			</div>
 		</section>
