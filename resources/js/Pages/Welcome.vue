@@ -1,298 +1,155 @@
 <template>
-  <div class="min-h-screen bg-gray-50 text-gray-900">
-    <header class="border-b border-gray-200 bg-white/95 backdrop-blur">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <inertia-link href="/" class="flex items-center">
-          <brand-logo tagline="Public internship platform" />
-        </inertia-link>
-
-        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-600">
-          <inertia-link :href="route('internships.index')" class="hover:text-gray-900 transition">Browse internships</inertia-link>
-          <inertia-link :href="route('blog.index')" class="hover:text-gray-900 transition">Blog</inertia-link>
-          <inertia-link href="/about" class="hover:text-gray-900 transition">About</inertia-link>
-          <inertia-link href="/contact" class="hover:text-gray-900 transition">Contact</inertia-link>
-          <inertia-link :href="route('login')" class="hover:text-gray-900 transition">Login</inertia-link>
-          <inertia-link :href="route('register')" class="px-4 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition shadow-sm">
-            Create account
-          </inertia-link>
-        </nav>
-      </div>
-    </header>
-
-    <section class="max-w-7xl mx-auto px-6 pt-16 pb-12 lg:pt-24 lg:pb-20">
-      <div class="max-w-4xl">
+  <public-layout>
+    <section class="bg-white overflow-hidden">
+      <div class="in-wrap in-section in-hero-grid">
         <div>
-          <div class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-medium border border-blue-100">
-            Built for students, companies, and career teams
+          <div class="in-pill"><span class="in-pill-dot"></span> Public internship platform for Tunisia</div>
+          <h1 class="in-hero-title in-display mt-7">Discover internships. Apply with confidence.</h1>
+          <p class="in-hero-lead mt-6">Internly connects students with internship opportunities from trusted companies, then keeps applications, saved roles, and recruiter conversations in one clean workspace.</p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <inertia-link :href="route('internships.index')" class="in-btn in-btn-primary">Browse internships</inertia-link>
+            <inertia-link :href="route('register')" class="in-btn in-btn-ghost">Create free account</inertia-link>
           </div>
-          <h1 class="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-            Discover internships, apply faster, and connect with companies.
-          </h1>
-          <p class="mt-6 text-lg text-gray-600 max-w-2xl leading-8">
-            Internly is a public internship board and application workspace. Students can find SEO-visible opportunities on the web, while companies publish roles, review candidates, and manage communication from one focused dashboard.
-          </p>
-
-          <div class="mt-8 flex flex-col sm:flex-row gap-4">
-            <inertia-link :href="route('internships.index')" class="px-6 py-3 rounded-lg bg-gray-900 text-white font-semibold text-center hover:bg-gray-800 transition shadow-sm">
-              Browse internships
-            </inertia-link>
-            <inertia-link :href="route('register')" class="px-6 py-3 rounded-lg bg-white border border-gray-200 text-gray-800 font-semibold text-center hover:bg-gray-50 transition shadow-sm">
-              Create account
-            </inertia-link>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <section class="max-w-7xl mx-auto px-6 pb-8 lg:pb-12">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <card v-for="stat in stats" :key="stat.label">
-          <div class="p-5 md:p-6 text-center">
-            <div class="text-sm text-gray-500 uppercase tracking-wide">{{ stat.label }}</div>
-            <div class="mt-2 text-3xl md:text-4xl font-extrabold">{{ stat.value }}</div>
-          </div>
-        </card>
-      </div>
-    </section>
-
-    <section class="max-w-7xl mx-auto px-6 py-8 lg:py-12">
-      <div class="grid md:grid-cols-3 gap-6">
-        <card v-for="audience in audiences" :key="audience.title">
-          <div class="p-6">
-            <div class="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-5">
-              <icon :name="audience.icon" class="h-6 w-6" />
+          <div class="mt-10 grid grid-cols-3 gap-4 max-w-xl">
+            <div v-for="stat in stats" :key="stat.label" class="in-card p-4">
+              <div class="in-heading text-2xl font-bold">{{ stat.value }}</div>
+              <div class="mt-1 text-xs font-bold uppercase tracking-wide text-gray-500">{{ stat.label }}</div>
             </div>
-            <h2 class="text-xl font-bold">{{ audience.title }}</h2>
-            <p class="mt-3 text-gray-600 leading-7">{{ audience.description }}</p>
           </div>
-        </card>
-      </div>
-    </section>
-
-    <section class="bg-white border-y border-gray-200 mt-8">
-      <div class="max-w-7xl mx-auto px-6 py-16">
-        <div class="max-w-3xl">
-          <div class="text-sm uppercase tracking-wide text-gray-500 font-medium">How it works</div>
-          <h2 class="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight">A simple workflow from discovery to decision</h2>
-          <p class="mt-4 text-gray-600 text-lg leading-8">Internly keeps the process straightforward: discover opportunities, apply with confidence, and manage communication in one clean experience.</p>
         </div>
 
-        <div class="mt-10 grid md:grid-cols-3 gap-6">
-          <card v-for="step in steps" :key="step.number">
-            <div class="p-6">
-              <div class="h-10 w-10 rounded-full bg-gray-900 text-white flex items-center justify-center text-sm font-bold">{{ step.number }}</div>
-              <h3 class="mt-5 text-xl font-bold">{{ step.title }}</h3>
-              <p class="mt-3 text-gray-600 leading-7">{{ step.description }}</p>
+        <div class="in-board">
+          <div class="in-board-top">
+            <div>
+              <div class="text-xs uppercase tracking-widest text-blue-200">Live board</div>
+              <div class="in-heading text-xl font-bold">Featured internships</div>
             </div>
-          </card>
-        </div>
-      </div>
-    </section>
-
-    <section class="max-w-7xl mx-auto px-6 py-16">
-      <div class="grid lg:grid-cols-2 gap-6">
-        <card title="Why students like it" subtitle="Designed to reduce friction and make applications feel manageable.">
-          <div class="p-6 space-y-4">
-            <div v-for="item in studentBenefits" :key="item.title" class="flex items-start space-x-4">
-              <div class="mt-1 h-9 w-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-                <icon :name="item.icon" class="h-4 w-4" />
+            <span class="in-tag in-tag-blue">Updated today</span>
+          </div>
+          <div v-for="role in featuredRoles" :key="role.title" class="in-board-row">
+            <div class="in-logo-tile">{{ role.company[0] }}</div>
+            <div class="min-w-0 flex-1">
+              <div class="font-bold text-gray-900">{{ role.title }}</div>
+              <div class="mt-1 text-sm text-gray-500">{{ role.company }} · {{ role.city }} · {{ role.type }}</div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span v-for="tag in role.tags" :key="tag" class="in-tag">{{ tag }}</span>
               </div>
-              <div>
-                <div class="font-semibold">{{ item.title }}</div>
-                <div class="text-sm text-gray-600 mt-1 leading-6">{{ item.description }}</div>
+            </div>
+            <div class="hidden sm:block text-right">
+              <div class="font-bold text-blue-700">{{ role.pay }}</div>
+              <div class="text-xs text-gray-500 mt-1">{{ role.deadline }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="in-section in-navy">
+      <div class="in-wrap">
+        <div class="max-w-2xl">
+          <div class="text-blue-300 text-sm font-bold uppercase tracking-widest">How it works</div>
+          <h2 class="in-display mt-4 text-4xl md:text-5xl font-bold">A focused workflow from search to offer.</h2>
+        </div>
+        <div class="mt-10 grid md:grid-cols-3 gap-5">
+          <div v-for="step in steps" :key="step.title" class="rounded-3xl border border-white border-opacity-10 p-6 bg-white bg-opacity-5">
+            <div class="h-11 w-11 rounded-2xl bg-blue-600 text-white grid place-items-center font-bold">{{ step.no }}</div>
+            <h3 class="mt-5 text-xl font-bold">{{ step.title }}</h3>
+            <p class="mt-3 text-blue-100 leading-7">{{ step.text }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="in-section">
+      <div class="in-wrap">
+        <div class="grid lg:grid-cols-2 gap-6">
+          <div class="in-card p-7">
+            <div class="in-pill">For students</div>
+            <h2 class="in-display mt-5 text-4xl font-bold">Less guessing. More momentum.</h2>
+            <div class="mt-6 space-y-4">
+              <div v-for="item in studentBenefits" :key="item" class="flex gap-3">
+                <div class="mt-1 h-6 w-6 rounded-lg bg-blue-50 text-blue-700 grid place-items-center text-sm font-bold">✓</div>
+                <p class="text-gray-600 leading-7">{{ item }}</p>
               </div>
             </div>
           </div>
-        </card>
-
-        <card title="Why companies use it" subtitle="A simpler pipeline for publishing internships and reviewing candidates.">
-          <div class="p-6 space-y-4">
-            <div v-for="item in companyBenefits" :key="item.title" class="flex items-start space-x-4">
-              <div class="mt-1 h-9 w-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-                <icon :name="item.icon" class="h-4 w-4" />
-              </div>
-              <div>
-                <div class="font-semibold">{{ item.title }}</div>
-                <div class="text-sm text-gray-600 mt-1 leading-6">{{ item.description }}</div>
+          <div class="in-card p-7 bg-blue-600 text-white border-blue-600">
+            <div class="inline-flex rounded-full bg-white bg-opacity-15 px-3 py-1 text-sm font-bold">For companies</div>
+            <h2 class="in-display mt-5 text-4xl font-bold text-white">Post roles and review candidates faster.</h2>
+            <div class="mt-6 space-y-4">
+              <div v-for="item in companyBenefits" :key="item" class="flex gap-3">
+                <div class="mt-1 h-6 w-6 rounded-lg bg-white text-blue-700 grid place-items-center text-sm font-bold">✓</div>
+                <p class="text-blue-50 leading-7">{{ item }}</p>
               </div>
             </div>
           </div>
-        </card>
-      </div>
-    </section>
-
-    <section class="bg-white border-y border-gray-200">
-      <div class="max-w-7xl mx-auto px-6 py-16">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div class="max-w-3xl">
-            <div class="text-sm uppercase tracking-wide text-gray-500 font-medium">Internship resources</div>
-            <h2 class="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight">Guides to help students apply and companies hire.</h2>
-            <p class="mt-4 text-gray-600 text-lg leading-8">Read practical SEO-friendly guides about internship search, applications, hiring interns, and choosing the right internship platform.</p>
-          </div>
-          <inertia-link :href="route('blog.index')" class="px-5 py-3 rounded-xl bg-gray-900 text-white font-semibold text-center hover:bg-gray-800 transition">Visit the blog</inertia-link>
-        </div>
-
-        <div class="mt-10 grid md:grid-cols-3 gap-6">
-          <card v-for="post in featuredPosts" :key="post.slug">
-            <div class="p-6">
-              <div class="text-sm text-blue-600 font-semibold">{{ post.category }}</div>
-              <h3 class="mt-3 text-xl font-bold leading-tight">
-                <inertia-link :href="route('blog.show', post.slug)" class="hover:text-blue-700">{{ post.title }}</inertia-link>
-              </h3>
-              <p class="mt-3 text-gray-600 leading-7">{{ post.excerpt }}</p>
-              <inertia-link :href="route('blog.show', post.slug)" class="inline-block mt-5 font-semibold text-blue-700 hover:text-blue-800">Read guide →</inertia-link>
-            </div>
-          </card>
         </div>
       </div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-6 py-20">
-      <div class="rounded-3xl bg-gray-900 text-white px-8 py-10 md:px-12 md:py-14 shadow-xl">
-        <div class="max-w-3xl">
-          <div class="text-sm uppercase tracking-wider text-gray-300 font-medium">Ready to launch?</div>
-          <h2 class="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight">Make internships easier to find and easier to manage.</h2>
-          <p class="mt-4 text-gray-300 text-lg leading-8">
-            Whether you're searching for your next internship or managing opportunities for your company, Internly gives you a clean, focused workspace to move faster.
-          </p>
-          <div class="mt-8 flex flex-col sm:flex-row gap-4">
-            <inertia-link :href="route('internships.index')" class="px-6 py-3 rounded-lg bg-white text-gray-900 font-semibold text-center hover:bg-gray-100 transition">
-              Browse public internships
-            </inertia-link>
-            <inertia-link :href="route('register')" class="px-6 py-3 rounded-lg border border-gray-700 text-white font-semibold text-center hover:bg-gray-800 transition">
-              Create account
-            </inertia-link>
+    <section class="in-section bg-white">
+      <div class="in-wrap">
+        <div class="max-w-2xl">
+          <div class="text-blue-700 text-sm font-bold uppercase tracking-widest">FAQ</div>
+          <h2 class="in-display mt-4 text-4xl font-bold">Questions students ask before applying.</h2>
+        </div>
+        <div class="mt-8 grid md:grid-cols-2 gap-4">
+          <div v-for="faq in faqs" :key="faq.q" class="in-faq-item">
+            <h3 class="font-bold text-gray-900">{{ faq.q }}</h3>
+            <p class="mt-3 text-gray-600 leading-7">{{ faq.a }}</p>
           </div>
         </div>
       </div>
     </section>
 
-    <footer class="border-t border-gray-200 bg-white">
-      <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-sm text-gray-500">
-        <div>
-          <div class="font-semibold text-gray-800">Internly</div>
-          <div class="mt-1">A streamlined internship platform for students and companies.</div>
-        </div>
-        <div class="flex items-center gap-6">
-          <inertia-link :href="route('internships.index')" class="hover:text-gray-800">Internships</inertia-link>
-          <inertia-link :href="route('blog.index')" class="hover:text-gray-800">Blog</inertia-link>
-          <inertia-link href="/about" class="hover:text-gray-800">About</inertia-link>
-          <inertia-link href="/contact" class="hover:text-gray-800">Contact</inertia-link>
-          <a href="https://www.linkedin.com/in/alabaganne/" target="_blank" class="hover:text-gray-800">Built by Ala Baganne</a>
+    <section class="in-section">
+      <div class="in-wrap">
+        <div class="in-navy rounded-3xl p-8 md:p-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+          <div class="max-w-2xl">
+            <h2 class="in-display text-4xl font-bold text-white">Ready to find your next internship?</h2>
+            <p class="mt-4 text-blue-100 leading-7">Browse public listings now, then create an account when you're ready to save roles and apply.</p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <inertia-link :href="route('internships.index')" class="in-btn bg-white text-gray-900">Browse roles</inertia-link>
+            <inertia-link :href="route('register')" class="in-btn in-btn-primary">Join Internly</inertia-link>
+          </div>
         </div>
       </div>
-    </footer>
-  </div>
+    </section>
+  </public-layout>
 </template>
 
 <script>
-import EmptyLayout from "@/Layouts/Empty";
+import PublicLayout from '@/Layouts/Public'
 
 export default {
-  layout: EmptyLayout,
-  props: {
-    canLogin: Boolean,
-    canRegister: Boolean,
-  },
+  components: { PublicLayout },
   data() {
     return {
       stats: [
-        { label: "Students", value: "1k+" },
-        { label: "Companies", value: "100+" },
-        { label: "Open roles", value: "250+" },
-        { label: "Applications", value: "5k+" },
+        { value: '500+', label: 'Students' },
+        { value: '120+', label: 'Companies' },
+        { value: '48h', label: 'Avg reply' },
       ],
-      featuredPosts: [
-        {
-          slug: "how-to-find-an-internship-as-a-student",
-          category: "Students",
-          title: "How to find an internship as a student",
-          excerpt: "A practical guide to finding internships, filtering real opportunities, and applying with a stronger profile.",
-        },
-        {
-          slug: "best-internship-application-tips",
-          category: "Students",
-          title: "Best internship application tips for students",
-          excerpt: "Simple ways to make your internship application clearer, more relevant, and easier for companies to review.",
-        },
-        {
-          slug: "how-companies-can-hire-interns-faster",
-          category: "Companies",
-          title: "How companies can hire interns faster",
-          excerpt: "A hiring workflow for companies that want better internship candidates without a messy application process.",
-        },
-      ],
-      audiences: [
-        {
-          icon: "user-group",
-          title: "For students",
-          description: "Find internships that actually match your skills, field, and ambition — then apply through a cleaner, more professional flow.",
-        },
-        {
-          icon: "office-building",
-          title: "For companies",
-          description: "Publish internship opportunities, review applications faster, and manage candidates from one structured dashboard.",
-        },
-        {
-          icon: "document-text",
-          title: "For career teams",
-          description: "Support employability initiatives with a platform that makes internships easier to discover, organize, and promote.",
-        },
+      featuredRoles: [
+        { title: 'Frontend Developer Intern', company: 'Expensya', city: 'Tunis', type: 'Hybrid', pay: '900 DT/mo', deadline: 'Closes Jun 28', tags: ['Vue', 'UX', 'SaaS'] },
+        { title: 'Data Science Intern', company: 'Keyrus', city: 'Ariana', type: 'On-site', pay: 'Academic credit', deadline: 'Closes Jul 03', tags: ['Python', 'BI', 'ML'] },
+        { title: 'Mobile Engineer Intern', company: 'Satoripop', city: 'Sousse', type: 'Remote', pay: '750 DT/mo', deadline: 'Closes Jul 15', tags: ['React Native', 'API'] },
       ],
       steps: [
-        {
-          number: "01",
-          title: "Explore",
-          description: "Students browse opportunities by role, company, and field to focus on internships that actually fit their goals.",
-        },
-        {
-          number: "02",
-          title: "Apply",
-          description: "Applications stay simple and structured, giving candidates a better chance to present themselves clearly.",
-        },
-        {
-          number: "03",
-          title: "Connect",
-          description: "Companies review applicants, communicate with candidates, and move the process forward from one place.",
-        },
+        { no: '01', title: 'Discover', text: 'Search by field, city, company, or keyword and find roles that match your skills.' },
+        { no: '02', title: 'Apply', text: 'Submit your application with your profile, cover letter, and attachments.' },
+        { no: '03', title: 'Track', text: 'Follow application status and keep recruiter messages in one dashboard.' },
       ],
-      studentBenefits: [
-        {
-          icon: "search",
-          title: "Better discovery",
-          description: "Browse internships in a way that feels curated instead of chaotic.",
-        },
-        {
-          icon: "document-text",
-          title: "Clearer applications",
-          description: "Apply with the right information in the right place, without unnecessary complexity.",
-        },
-        {
-          icon: "mail",
-          title: "Direct communication",
-          description: "Keep conversations and updates closer to the application itself.",
-        },
+      studentBenefits: ['Save internships and return later.', 'Track every application from submitted to interview.', 'Message companies without losing context.'],
+      companyBenefits: ['Publish internships in minutes.', 'Review applicants from one clean pipeline.', 'Contact students and keep decisions organized.'],
+      faqs: [
+        { q: 'Is Internly free for students?', a: 'Yes. Students can browse internships, create a profile, save roles, and apply for free.' },
+        { q: 'Can companies post internships?', a: 'Yes. Company accounts include profile onboarding and internship posting tools.' },
+        { q: 'Do I need an account to browse?', a: 'No. Public internship pages are visible. You only need an account to apply or save roles.' },
+        { q: 'Is this only for tech internships?', a: 'No. The current catalog includes software, design, data, marketing, finance, and business roles.' },
       ],
-      companyBenefits: [
-        {
-          icon: "briefcase",
-          title: "Publish opportunities quickly",
-          description: "Create and manage internship listings through a clean, lightweight workflow.",
-        },
-        {
-          icon: "folder",
-          title: "Review candidates efficiently",
-          description: "See applications in one place and spend less time navigating clutter.",
-        },
-        {
-          icon: "office-building",
-          title: "Present your brand better",
-          description: "Offer candidates a more polished first impression than generic job boards.",
-        },
-      ],
-    };
+    }
   },
-};
+}
 </script>

@@ -1,45 +1,31 @@
 <template>
-	<div class="flex-1 max-h-full flex flex-col">
-		<div class="h-20 px-6 bg-white flex justify-between items-center border-b">
+	<div class="flex-1 max-h-full flex flex-col min-w-0">
+		<div class="h-20 px-6 bg-white flex justify-between items-center border-b border-gray-100">
 			<template v-if="contact">
-				<div class="flex items-center">
-					<img
-						class="h-12 w-12 object-cover rounded-full"
-						src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=200&h=200&q=60"
-						alt=""
-					>
-					<div class="ml-3">
-						<div class="leading-5 text-lg font-medium">{{ contact.name }}</div>
-						<div class="text-gray-500 text-sm">{{ contact.email }}</div>
+				<div class="flex items-center min-w-0">
+					<div class="h-12 w-12 rounded-2xl bg-blue-600 text-white grid place-items-center font-bold flex-shrink-0">{{ initials(contact.name) }}</div>
+					<div class="ml-3 min-w-0">
+						<div class="leading-5 text-lg font-bold truncate">{{ contact.name }}</div>
+						<div class="text-gray-500 text-sm truncate">{{ contact.email }}</div>
 					</div>
 				</div>
-				<!-- <div></div> -->
 			</template>
-			<div v-else>No contact selected</div>
+			<div v-else class="font-bold text-gray-600">No contact selected</div>
 		</div>
-		<div v-if="contact" class="flex-1 p-6 space-y-4 overflow-auto" scroll-region ref="messagesContainer">
+		<div v-if="contact" class="flex-1 p-6 space-y-4 overflow-auto bg-gray-50" scroll-region ref="messagesContainer">
 			<div class="flex" v-for="message in contact.messages" :key="message.id">
-				<div class="flex flex-col" :class="{ 'ml-auto text-right': sentMessage(message	) }">
-					<div class="px-1 mb-0.5 text-gray-900 text-xs font-medium">
-						{{ sentMessage(message) ? 'You' : contact.name }}
+				<div class="flex flex-col" :class="{ 'ml-auto text-right': sentMessage(message) }">
+					<div class="px-1 mb-1 text-gray-500 text-xs font-bold">{{ sentMessage(message) ? 'You' : contact.name }}</div>
+					<div class="p-4 max-w-lg rounded-2xl border text-left" :class="sentMessage(message) ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-900 border-gray-100'">
+						<div class="text-sm leading-6">{{ message.text }}</div>
+						<div class="mt-2 text-xs font-bold" :class="sentMessage(message) ? 'text-blue-100' : 'text-blue-600'">{{ message.created_at }}</div>
 					</div>
-					<card class="p-4 max-w-lg shadow-none border">
-						<div class="text-sm text-left">
-							{{ message.text }}
-						</div>
-						<div class="mt-1 text-xs text-blue-500 font-medium">{{ message.created_at }}</div>
-					</card>
 				</div>
 			</div>
 		</div>
-		<form v-if="contact" @submit.prevent="sendMessage" class="border-t bg-white mt-auto pl-2 pr-6 py-3 mb-0 flex items-center">
-			<input
-				v-model="newMessage"
-				type="text"
-				class="text-sm bg-transparent border-none focus:placeholder-transparent focus:ring-0 w-full"
-				placeholder="Aa"
-			/>
-			<button type="submit" class="ml-4 flex-shrink-0 btn btn-primary">Send -></button>
+		<form v-if="contact" @submit.prevent="sendMessage" class="border-t border-gray-100 bg-white mt-auto p-3 flex items-center gap-3">
+			<input v-model="newMessage" type="text" class="in-input text-sm" placeholder="Write a message" />
+			<button type="submit" class="in-btn in-btn-primary flex-shrink-0">Send →</button>
 		</form>
 	</div>
 </template>
@@ -48,48 +34,22 @@
 import { nextTick } from 'vue';
 
 export default {
-	props: {
-		contact: {
-			type: Object,
-			required: false,
-		}
-	},
-	data() {
-		return {
-			newMessage: ''
-		}
-	},
-	watch: {
-		contact: {
-			handler() {
-				this.scrollToBottom();
-			},
-			deep: true
-		}
-	},
-	mounted() {
-		this.scrollToBottom();
-	},
+	props: { contact: { type: Object, required: false } },
+	data() { return { newMessage: '' } },
+	watch: { contact: { handler() { this.scrollToBottom(); }, deep: true } },
+	mounted() { this.scrollToBottom(); },
 	methods: {
 		sendMessage() {
 			if(this.newMessage === '') return;
-
-			this.$inertia.post(
-				this.route('messages.store'),
-				{ to_id: this.contact.id, text: this.newMessage },
-				{ preserveScroll: true, onSuccess: () => { this.newMessage = '' } },
-			);
+			this.$inertia.post(this.route('messages.store'), { to_id: this.contact.id, text: this.newMessage }, { preserveScroll: true, onSuccess: () => { this.newMessage = '' } });
 		},
 		async scrollToBottom() {
 			await nextTick();
+			if (!this.$refs.messagesContainer) return;
 			this.$refs.messagesContainer.scrollTop = this.$refs.messagesContainer.scrollHeight - this.$refs.messagesContainer.clientHeight;
 		},
-		sentMessage(message) {
-			return this.currentUser.id === message.from_id;
-		},
-		formatDate(date) {
-			return `Today at ${date.toLocaleString('en-US', { timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric' })}`;
-		}
+		sentMessage(message) { return this.currentUser.id === message.from_id; },
+		initials(name) { return (name || 'IN').split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase() },
 	}
 }
 </script>

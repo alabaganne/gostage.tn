@@ -1,145 +1,72 @@
 <template>
 	<div class="flex-shrink-0 2xl:w-96 order-2 2xl:order-first mt-6 2xl:mt-0">
-		<card title="Filters" subtitle="Use the filters below to find the internships that interest you.">
-			<div class="sm:flex flex-wrap">
-				<form @submit.prevent="filter" autocomplete="off" class="p-6 w-full">
-					<label for="search-internships">Search</label>
-					<input
-						type="text"
-						class="mt-1 form-control focus:placeholder-transparent w-full py-2.5"
-						id="search-internships"
-						name="search-internships"
-						v-model="search"
-						placeholder="Search internships by Title"
-					/>
-				</form>
-				<div class="p-6 w-full border-t">
-					<label>Fields of Study</label>
-					<div class="mt-3 space-y-2">
-						<template v-for="field in fields" :key="field.id">
-							<div v-if="field.internships_count > 0" class="flex justify-between items-center">
-								<div class="flex items-center">
-									<input type="checkbox" :value="field.id" v-model="selected.fields" />
-									<span class="ml-2 leading-5">{{ field.name }}</span>
-								</div>
-								<div class="tag tag-sm tag-primary rounded-full h-6 w-6 flex-center">{{ field.internships_count }}</div>
-							</div>
-						</template>
-						<div v-show="noFilters(fields)" class="text-gray-500 text-sm">No filters found.</div>
-					</div>
-				</div>
-
-				<div v-if="companies.length" class="p-6 w-full border-t">
-					<label>Companies</label>
-					<div class="mt-3 space-y-2">
-						<template v-for="company in companies" :key="company.id">
-							<div v-if="company.internships_count > 0" class="flex justify-between items-center">
-								<div class="flex items-center">
-									<input type="checkbox" :value="company.id" v-model="selected.companies" />
-									<span class="ml-2 leading-5">{{ company.name }}</span>
-								</div>
-								<div class="tag tag-sm tag-primary rounded-full h-6 w-6 flex-center">{{ company.internships_count }}</div>
-							</div>
-						</template>
-						<div v-show="noFilters(companies)" class="text-gray-500 text-sm">No filters found.</div>
-					</div>
-				</div>
-
-				<div class="p-6 w-full border-t">
-					<label>Cities</label>
-					<div class="mt-3 space-y-2">
-						<template v-for="city in cities" :key="city.id">
-							<div v-if="city.internships_count > 0" class="flex justify-between items-center">
-								<div class="flex items-center">
-									<input type="checkbox" :value="city.id" v-model="selected.cities" />
-									<span class="ml-2 leading-5">{{ city.name }}</span>
-								</div>
-								<div class="tag tag-sm tag-primary rounded-full h-6 w-6 flex-center">{{ city.internships_count }}</div>
-							</div>
-						</template>
-						<div v-show="noFilters(cities)" class="text-gray-500 text-sm">No filters found.</div>
-					</div>
-				</div>
+		<div class="in-filter-panel">
+			<div class="p-5 border-b border-gray-100">
+				<h3 class="in-heading text-lg font-bold">Filters</h3>
+				<p class="mt-1 text-sm text-gray-500">Find roles by title, field, company, or city.</p>
 			</div>
-			<template v-slot:footer>
-				<div>
-					<button @click="reset" class="btn btn-lg btn-primary w-full">
-						Reset Filters
-					</button>
+			<form @submit.prevent="filter" autocomplete="off" class="p-5 border-b border-gray-100">
+				<label for="search-internships" class="in-label">Search</label>
+				<div class="flex gap-2">
+					<input type="text" class="in-input" id="search-internships" v-model="search" placeholder="Search internships" />
+					<button class="in-btn in-btn-primary" type="submit">Search</button>
 				</div>
-			</template>
-		</card>
+			</form>
+			<filter-group title="Fields of Study" :items="fields" v-model="selected.fields" />
+			<filter-group v-if="companies.length" title="Companies" :items="companies" v-model="selected.companies" />
+			<filter-group title="Cities" :items="cities" v-model="selected.cities" />
+			<div class="p-5 border-t border-gray-100">
+				<button @click="reset" type="button" class="in-btn in-btn-ghost in-btn-block">Reset filters</button>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
-import { throttle } from "lodash";
+import { throttle } from 'lodash'
+
+const FilterGroup = {
+	props: ['title', 'items', 'modelValue'],
+	emits: ['update:modelValue'],
+	methods: {
+		toggle(id, checked) {
+			const current = Array.isArray(this.modelValue) ? [...this.modelValue] : []
+			const next = checked ? [...new Set([...current, id])] : current.filter(value => value !== id)
+			this.$emit('update:modelValue', next)
+		},
+	},
+	template: `
+		<div class="p-5 border-b border-gray-100">
+			<div class="in-label">{{ title }}</div>
+			<div class="mt-3 space-y-2">
+				<template v-for="item in items" :key="item.id">
+					<label v-if="item.internships_count > 0" class="flex justify-between items-center gap-3 text-sm text-gray-700">
+						<span class="flex items-center gap-2"><input type="checkbox" :value="item.id" :checked="(modelValue || []).includes(item.id)" @change="toggle(item.id, $event.target.checked)" />{{ item.name }}</span>
+						<span class="in-tag in-tag-blue">{{ item.internships_count }}</span>
+					</label>
+				</template>
+				<div v-if="!items.filter(el => el.internships_count !== 0).length" class="text-gray-500 text-sm">No filters found.</div>
+			</div>
+		</div>`
+}
 
 export default {
-	props: {
-		fields: {
-			type: Array,
-			required: true
-		},
-		cities: {
-			type: Array,
-			required: true
-		},
-		companies: {
-			type: Array,
-			required: true
-		},
-		filters: {
-			type: Object,
-			required: true
-		},
-	},
+	components: { FilterGroup },
+	props: { fields: Array, cities: Array, companies: Array, filters: Object },
 	emits: ['filter'],
 	data() {
-		return {
-			selected: {
-				fields: this.filters.fields || [],
-				cities: this.filters.cities || [],
-				companies: this.filters.companies || [],
-			},
-			search: this.filters.search
-		}
+		return { selected: { fields: this.filters.fields || [], cities: this.filters.cities || [], companies: this.filters.companies || [] }, search: this.filters.search }
 	},
 	watch: {
-		selected: {
-			handler: function() {
-				this.filter();
-			},
-			deep: true,
-		},
-		search: {
-			handler: throttle(function () {
-				this.filter()
-			}, 500)
-		}
+		selected: { handler() { this.filter() }, deep: true },
+		search: { handler: throttle(function () { this.filter() }, 650) }
 	},
 	methods: {
 		filter() {
-			this.$inertia.get(
-				this.route('internships.index'),
-				{
-					...this.selected,
-					search: this.search
-				},
-				{
-					preserveState: true,
-					preserveScroll: true,
-					replace: true
-				}
-			)
-			this.$emit('filter', this.selected);
+			this.$inertia.get(this.route('internships.index'), { ...this.selected, search: this.search }, { preserveState: true, preserveScroll: true, replace: true })
+			this.$emit('filter', this.selected)
 		},
-		reset() {
-			this.$inertia.get(this.route('internships.index'))
-		},
-		noFilters(arr) {
-			return arr.filter(el => el.internships_count !== 0).length === 0;
-		},
+		reset() { this.$inertia.get(this.route('internships.index')) },
 	},
 }
 </script>

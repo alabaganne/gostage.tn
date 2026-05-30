@@ -1,9 +1,9 @@
 <template>
-	<div class="p-6 xl:pt-8 mx-auto flex flex-1 flex-col w-full" :class="maxWidthClass">
-			<header v-if="title" class="mb-7 flex justify-between items-center">
-			<div class="uppercase">
-				<div class="text-gray-500 text-sm font-medium">{{ subtitle }}</div>
-				<div class="text-gray-900 text-3xl font-extrabold">{{ title }}</div>
+	<div class="p-5 md:p-8 mx-auto flex flex-1 flex-col w-full" :class="maxWidthClass || 'max-w-7xl'">
+		<header v-if="title" class="mb-7 flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4">
+			<div>
+				<div class="text-blue-700 text-xs font-extrabold uppercase tracking-widest">{{ subtitle }}</div>
+				<div class="in-display mt-1 text-gray-900 text-3xl md:text-4xl font-bold">{{ title }}</div>
 			</div>
 			<div>
 				<slot name="header-right" />
@@ -12,8 +12,8 @@
 		<main class="flex-1">
 			<slot :key="routeUrl()" />
 		</main>
-		<footer class="mt-6 text-gray-600 text-sm font-medium text-center">
-			Designed and developped by <a href="https://www.linkedin.com/in/alabaganne/" target="_blank" class="link hover:underline">Ala Baganne</a>
+		<footer class="mt-8 text-gray-500 text-xs font-medium text-center">
+			Designed and developed by <a href="https://www.linkedin.com/in/alabaganne/" target="_blank" class="link hover:underline">Ala Baganne</a>
 		</footer>
 	</div>
 </template>
@@ -22,13 +22,8 @@
 export default {
 	props: {
 		title: String,
-		subtitle: {
-			type: String,
-			default: "Page"
-		},
-		maxWidthClass: {
-			type: String,
-		}
+		subtitle: { type: String, default: 'Page' },
+		maxWidthClass: { type: String },
 	}
 }
 </script>

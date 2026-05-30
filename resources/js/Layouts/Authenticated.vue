@@ -1,9 +1,8 @@
 <template>
-	<div v-if="currentUser" class="flex min-h-screen bg-gray-100">
+	<div v-if="currentUser" class="flex min-h-screen in-layout-bg">
 		<toast :toast="$page.props.toast" :popstate="$page.props.popstate" />
-
 		<sidebar :key="routeUrl()" />
-		<div class="flex-1 flex flex-col text-gray-900">
+		<div class="flex-1 flex flex-col text-gray-900 min-w-0">
 			<navbar />
 			<slot />
 		</div>
