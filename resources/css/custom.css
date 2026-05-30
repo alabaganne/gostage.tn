@@ -450,7 +450,6 @@ h1,h2,h3,h4{font-family:var(--font-display);letter-spacing:-.02em;line-height:1.
 /* ===== auth.html ===== */
 :root{--shadow-sm:none;--shadow:none;--shadow-lg:none}
 .btn-primary{box-shadow:none}
-body{height:100vh;overflow:hidden}
 .auth{display:grid;grid-template-columns:1fr 1.15fr;height:100vh}
 @media(max-width:900px){.auth{grid-template-columns:1fr}.brandside{display:none}}
 
@@ -528,7 +527,6 @@ body.is-company .company-only{display:block}
 /* ===== login.html ===== */
 :root{--shadow-sm:none;--shadow:none;--shadow-lg:none}
 .btn-primary{box-shadow:none}
-body{height:100vh;overflow:hidden}
 .auth{display:grid;grid-template-columns:1fr 1.15fr;height:100vh}
 @media(max-width:900px){.auth{grid-template-columns:1fr}.brandside{display:none}}
 

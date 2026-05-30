@@ -2660,11 +2660,6 @@ h1,h2,h3,h4{
   box-shadow:none
 }
 
-body{
-  height:100vh;
-  overflow:hidden
-}
-
 .auth{
   display:grid;
   grid-template-columns:1fr 1.15fr;
@@ -3116,11 +3111,6 @@ body.is-company .company-only{
 
 .btn-primary{
   box-shadow:none
-}
-
-body{
-  height:100vh;
-  overflow:hidden
 }
 
 .auth{
