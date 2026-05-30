@@ -1,8 +1,8 @@
 <template>
-	<div v-if="currentUser" class="flex min-h-screen in-layout-bg">
+	<div v-if="currentUser" class="app">
 		<toast :toast="$page.props.toast" :popstate="$page.props.popstate" />
 		<sidebar :key="routeUrl()" />
-		<div class="flex-1 flex flex-col text-gray-900 min-w-0">
+		<div class="main">
 			<navbar />
 			<slot />
 		</div>
@@ -19,13 +19,9 @@ export default {
 	components: { Sidebar, Navbar, Toast },
 	mounted() {
 		if (!this.currentUser || !window.Echo) return;
-
-		window.Echo.private('user.' + this.currentUser.id)
-			.listen('.messages', e => {
-				if(!route().current('messages.index')) {
-					this.$page.props.toast = e.toast
-				}
-			})
+		window.Echo.private('user.' + this.currentUser.id).listen('.messages', e => {
+			if(!route().current('messages.index')) this.$page.props.toast = e.toast
+		})
 	}
 }
 </script>

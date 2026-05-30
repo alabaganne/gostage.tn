@@ -1,60 +1,22 @@
 <template>
-	<div class="inline-flex items-center" :class="stacked ? 'flex-col text-center' : ''">
-		<div
-			class="flex items-center justify-center select-none"
-			:class="sizeClasses"
-		>
-			<img
-				src="/images/internly-logo.png?v=3"
-				alt="Internly logo"
-				class="h-full w-full object-contain"
-			/>
-		</div>
-		<div v-if="showText" :class="stacked ? 'mt-3' : 'ml-3'">
-			<div :class="[titleClasses, dark ? 'text-white' : 'text-gray-900']">Internly</div>
-			<div v-if="tagline" :class="[taglineClasses, dark ? 'text-gray-300' : 'text-gray-500']">{{ tagline }}</div>
-		</div>
-	</div>
+	<span class="brand" :class="{ 'brand-compact': compact }">
+		<span class="logo">
+			<svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+		</span>
+		<span v-if="showText"><b>Internly</b><small>{{ tagline || defaultTagline }}</small></span>
+	</span>
 </template>
 
 <script>
 export default {
 	props: {
-		showText: {
-			type: Boolean,
-			default: true,
-		},
-		tagline: {
-			type: String,
-			default: '',
-		},
-		size: {
-			type: String,
-			default: 'md',
-		},
-		dark: {
-			type: Boolean,
-			default: false,
-		},
-		stacked: {
-			type: Boolean,
-			default: false,
-		},
+		showText: { type: Boolean, default: true },
+		tagline: { type: String, default: '' },
+		dark: { type: Boolean, default: false },
+		compact: { type: Boolean, default: false },
 	},
 	computed: {
-		sizeClasses() {
-			return {
-				sm: 'h-8 w-8 rounded-lg',
-				md: 'h-10 w-10',
-				lg: 'h-16 w-16 rounded-2xl',
-			}[this.size] || 'h-10 w-10';
-		},
-		titleClasses() {
-			return this.size === 'lg' ? 'text-2xl font-extrabold tracking-tight' : 'text-xl font-extrabold tracking-tight';
-		},
-		taglineClasses() {
-			return 'text-xs uppercase tracking-wide';
-		},
-	},
-};
+		defaultTagline() { return this.dark ? 'STUDENT WORKSPACE' : 'INTERNSHIP PLATFORM' }
+	}
+}
 </script>

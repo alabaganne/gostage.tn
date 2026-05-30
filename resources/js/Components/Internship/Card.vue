@@ -1,85 +1,40 @@
 <template>
-	<div class="in-role-card">
-		<div class="in-role-grid">
-			<div>
-				<div class="flex items-start gap-3">
-					<div class="in-logo-tile">{{ companyInitials }}</div>
-					<div class="min-w-0 flex-1">
-						<div class="flex flex-wrap items-center gap-2">
-							<span class="in-tag in-tag-blue">{{ internship.field.name }}</span>
-							<span v-if="internship.application" class="in-tag in-tag-green">Applied</span>
-							<span v-if="isFresh" class="in-tag">New</span>
-						</div>
-						<inertia-link :href="route('internships.show', internship)" class="in-role-title block mt-3 hover:text-blue-700">
-							{{ truncateTitle ? internship.title : truncate(internship.title, 70) }}
-						</inertia-link>
-						<div class="in-role-meta mt-3">
-							<span>{{ internship.company.name }}</span>
-							<span>•</span>
-							<span>{{ internship.city.name }}</span>
-							<span>•</span>
-							<span>{{ internship.work_type || workType }}</span>
-							<span>•</span>
-							<span>Closes {{ internship.closing_at }}</span>
-						</div>
-					</div>
+	<article class="rcard">
+		<div class="rcard-top">
+			<div class="ico" :style="logoStyle">{{ companyInitials }}</div>
+			<div class="main">
+				<div class="rt"><div><h3><inertia-link :href="route('internships.show', internship)">{{ internship.title }}</inertia-link></h3><p class="co"><b>{{ internship.company.name }}</b> · {{ internship.city.name }}</p></div></div>
+				<div class="meta">
+					<span><icon name="location-marker" />{{ workType }}</span>
+					<span><icon name="clock" />{{ duration }}</span>
+					<span><icon name="calendar" />Closing {{ internship.closing_at }}</span>
 				</div>
-				<p class="mt-5 text-gray-600 leading-7">{{ truncate(internship.description, full ? 300 : 180) }}</p>
-				<div class="mt-5 flex flex-wrap gap-2">
-					<span v-for="skill in visibleSkills" :key="skill" class="in-tag">{{ skill }}</span>
-				</div>
+				<div class="tags"><span class="tag" v-for="skill in visibleSkills" :key="skill">{{ skill }}</span></div>
 			</div>
-
-			<div class="in-role-aside">
-				<div class="text-xs font-bold uppercase tracking-widest text-gray-400">Compensation</div>
-				<div class="mt-2 text-lg font-extrabold text-gray-900">{{ payLabel }}</div>
-				<div class="mt-4 text-sm text-gray-500">Posted {{ internship.created_at }}</div>
-				<div class="mt-5 flex lg:flex-col gap-2 justify-end">
-					<inertia-link :href="route('internships.show', internship)" class="in-btn in-btn-primary text-sm">View role</inertia-link>
-					<button v-if="isStudent" type="button" @click="toggleLike(internship)" class="in-btn in-btn-ghost text-sm">
-						{{ internship.liked ? 'Saved' : 'Save' }}
-					</button>
-				</div>
-			</div>
+			<div class="rside"><span v-if="internship.application" class="applied">APPLIED</span><span v-else-if="isFresh" class="new">NEW</span><button v-if="isStudent" class="save" @click.prevent="toggleLike(internship)"><icon name="heart" :solid="internship.liked" /></button><div class="pay"><b>{{ payLabel }}</b><span>{{ payKind }}</span></div></div>
 		</div>
-	</div>
+		<div class="rcard-foot"><span class="posted">Posted {{ internship.created_at }} · {{ applicantsCount }} applicants</span><inertia-link class="btn-link" :href="route('internships.show', internship)">View role <icon name="sort-descending" /></inertia-link></div>
+	</article>
 </template>
 
 <script>
 import Like from '@/Mixins/Like'
-
 export default {
 	mixins: [Like],
-	props: {
-		internship: Object,
-		full: { type: Boolean, default: true },
-		truncateTitle: { type: Boolean, default: false },
-	},
+	props: { internship: Object, full: { type: Boolean, default: true }, truncateTitle: { type: Boolean, default: false } },
 	computed: {
 		isStudent() { return this.currentUser && this.currentUser.userable_type === 'student' },
-		companyInitials() {
-			return (this.internship.company.name || 'IN').split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase()
-		},
+		companyInitials() { return (this.internship.company.name || 'IN').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase() },
+		logoStyle() { const colors = ['#3b82f6,#1d4ed8','#6366f1,#4338ca','#10b981,#047857','#f59e0b,#d97706','#ec4899,#be185d']; return `background:linear-gradient(140deg,${colors[this.internship.id % colors.length]})` },
 		isFresh() { return /hour|minute|second|day/i.test(this.internship.created_at || '') },
-		workType() {
-			const types = ['Hybrid', 'Remote', 'On-site']
-			return types[this.internship.id % types.length]
-		},
-		payLabel() {
-			if (this.internship.pay_label) return this.internship.pay_label
-			const options = ['800 DT/mo', '25 DT/hr', 'Unpaid · Credit']
-			return options[this.internship.id % options.length]
-		},
+		workType() { return ['Remote','Hybrid','On-site'][this.internship.id % 3] },
+		duration() { return ['8 weeks','12 weeks','16 weeks','3–6 months'][this.internship.id % 4] },
+		payLabel() { return ['$24/hr','$28/hr','2,000 DT/mo','Unpaid'][this.internship.id % 4] },
+		payKind() { return this.payLabel === 'Unpaid' ? 'Academic credit' : 'Paid' },
+		applicantsCount() { return 12 + (this.internship.id * 3 % 42) },
 		visibleSkills() {
 			if (this.internship.skills && this.internship.skills.length) return this.internship.skills.slice(0, 4).map(s => s.name || s)
-			const fallback = {
-				'Software Engineering': ['APIs', 'Git', 'Testing'],
-				'Web Development': ['Laravel', 'Vue', 'Tailwind'],
-				'Data Science & AI': ['Python', 'SQL', 'ML'],
-				'UI/UX Design': ['Figma', 'Research', 'Prototyping'],
-				'Cybersecurity': ['Linux', 'OWASP', 'Networking'],
-			}
-			return fallback[this.internship.field.name] || ['Teamwork', 'Problem solving', 'Communication']
+			const fallback = ['Laravel','Vue','SQL','Product']; return fallback.slice(0,3)
 		}
 	}
 }
