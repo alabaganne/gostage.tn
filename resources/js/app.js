@@ -4,6 +4,7 @@ import { createApp, h } from "vue";
 import { createInertiaApp, Link } from "@inertiajs/vue3";
 
 import store from "./store";
+import reveal from "./directives/reveal";
 
 import AuthenticatedLayout from "./Layouts/Authenticated.vue";
 
@@ -57,6 +58,8 @@ createInertiaApp({
 					},
 				},
 			});
+
+		app.directive("reveal", reveal);
 
 		app.component("InertiaLink", Link);
 		app.component("Icon", Icon);
