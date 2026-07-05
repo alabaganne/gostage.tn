@@ -136,6 +136,8 @@ class InternshipController extends Controller
 					]
 				],
 				'attachments' => $internship->attachments ?: [],
+				'skills' => $internship->skills->pluck('name'),
+				'liked' => $user && $user->isStudent() ? $user->userable->likes->contains($internship->id) : null,
 				'application' => $application ? [
 					'id' => $application->id,
 					'student_id' => $application->student_id,
