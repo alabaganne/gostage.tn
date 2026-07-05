@@ -12,6 +12,9 @@ export default {
 
 		if (!('IntersectionObserver' in window)) return show();
 
+		// Safety net from the prototype: never leave content hidden.
+		setTimeout(show, 1200);
+
 		const io = new IntersectionObserver(
 			(entries) =>
 				entries.forEach((entry) => {

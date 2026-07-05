@@ -64,10 +64,19 @@ Route::get('/sitemap.xml', function () {
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'featured' => \App\Http\Resources\InternshipResource::collection(
+            \App\Models\Internship::with('company', 'field', 'city', 'skills')
+                ->withCount('applications')
+                ->latest()
+                ->take(6)
+                ->get()
+        ),
+        'stats' => [
+            'students' => \App\Models\Student::count(),
+            'companies' => \App\Models\Company::count(),
+            'internships' => \App\Models\Internship::count(),
+            'applications' => \App\Models\Application::count(),
+        ],
     ]);
 })->name('home');
 Route::inertia('/about', 'About')->name('about');

@@ -69,6 +69,12 @@
 	.chip {
 		@apply border-line bg-white text-ink-700 hover:border-blue-300;
 	}
+	.jcard {
+		@apply bg-white border border-line rounded-[18px] p-6 flex flex-col shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-card hover:border-blue-200;
+	}
+	.tag {
+		@apply inline-flex items-center px-[11px] py-[5px] rounded-lg text-xs font-semibold bg-paper-3 text-ink-700;
+	}
 	.ck {
 		@apply appearance-none w-[18px] h-[18px] border-[1.5px] border-line rounded-[5px] cursor-pointer shrink-0 relative transition-all;
 	}
@@ -139,5 +145,11 @@
 		@apply absolute left-0 top-1.5 w-[18px] h-[18px] rounded-md bg-blue-50 bg-no-repeat bg-center;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M5 13l4 4L19 7' stroke='%232563eb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 		background-size: 12px;
+	}
+}
+
+@keyframes bob {
+	50% {
+		transform: translateY(-9px);
 	}
 }
