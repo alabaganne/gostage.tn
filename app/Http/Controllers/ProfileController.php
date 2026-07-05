@@ -39,6 +39,9 @@ class ProfileController extends Controller
                 'about' => $student->about,
                 'field' => $student->field ? ['name' => $student->field->name] : null,
                 'city' => $student->city ? ['name' => $student->city->name] : null,
+                'skills' => $student->skills->pluck('name'),
+                'applications_count' => $student->applications()->count(),
+                'likes_count' => $student->likes()->count(),
             ];
         }
 
