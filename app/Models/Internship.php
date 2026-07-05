@@ -50,6 +50,10 @@ class Internship extends Model
         return $this->morphToMany(Skill::class, 'skillable');
     }
 
+    public function likes() { // students who saved this internship
+        return $this->belongsToMany(Student::class, 'likes');
+    }
+
     public function applications() { // students who applied for this internship
         return $this->belongsToMany(Student::class, 'applications')
             ->withPivot(['cover_letter', 'message', 'attachments', 'created_at'])

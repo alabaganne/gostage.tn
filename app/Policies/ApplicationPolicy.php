@@ -66,7 +66,7 @@ class ApplicationPolicy
      */
     public function update(User $user, Application $application)
     {
-        return $user->isAdmin() || ($user->isStudent() && $user->userable_id === $application->student_id && $application->status === null);
+        return $user->isAdmin() || ($user->isStudent() && $user->userable_id === $application->student_id && ! in_array($application->status, ['offer', 'closed'], true));
     }
 
     public function reply(User $user, Application $application)
@@ -83,7 +83,7 @@ class ApplicationPolicy
      */
     public function delete(User $user, Application $application)
     {
-        return $user->isAdmin() || ($user->isStudent() && $user->userable->id === $application->student_id && $application->status === null);
+        return $user->isAdmin() || ($user->isStudent() && $user->userable->id === $application->student_id && ! in_array($application->status, ['offer', 'closed'], true));
     }
 
     /**
