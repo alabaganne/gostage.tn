@@ -66,7 +66,7 @@ const strength = computed(() =>
 				<h1 class="font-display text-[32px] font-semibold tracking-[-.02em]">Your profile</h1>
 				<p class="text-muted text-[15px] mt-1.5">{{ isStudent ? 'This is how recruiters see you. Keep it sharp — complete profiles get 3× more responses.' : 'This is how students see your company on Internly.' }}</p>
 			</div>
-			<Link class="inline-flex items-center gap-2.5 font-semibold text-[15px] px-[22px] py-[13px] rounded-[12px] bg-blue-600 text-white hover:bg-blue-700 transition-colors [&_svg]:w-[17px] [&_svg]:h-[17px]" :href="route('profile.edit')">
+			<Link class="inline-flex items-center gap-2.5 font-semibold text-[15px] px-[22px] py-[13px] rounded-[12px] bg-blue-600 text-white hover:bg-blue-700 transition-colors [&_svg]:w-[17px] [&_svg]:h-[17px]" :href="route('settings')">
 				<span class="contents" v-html="icons.pencil"></span>
 				Edit profile
 			</Link>
@@ -99,13 +99,13 @@ const strength = computed(() =>
 				<section class="bg-white border border-line rounded-[18px] mb-[18px]">
 					<div class="flex items-center justify-between px-[22px] py-[18px] border-b border-line-2">
 						<h3 class="font-display text-[16.5px] font-semibold">About</h3>
-						<Link class="inline-flex items-center gap-[7px] text-[13px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-3 py-[7px] rounded-[9px] cursor-pointer hover:bg-blue-100 transition-colors [&_svg]:w-3.5 [&_svg]:h-3.5" :href="route('profile.edit')"><span class="contents" v-html="icons.pencil"></span> Edit</Link>
+						<Link class="inline-flex items-center gap-[7px] text-[13px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-3 py-[7px] rounded-[9px] cursor-pointer hover:bg-blue-100 transition-colors [&_svg]:w-3.5 [&_svg]:h-3.5" :href="route('settings')"><span class="contents" v-html="icons.pencil"></span> Edit</Link>
 					</div>
 					<div class="px-[22px] py-5">
 						<p v-if="profile.about" class="text-[14.5px] text-ink-700 leading-[1.7] whitespace-pre-line">{{ profile.about }}</p>
 						<p v-else class="text-[14.5px] text-muted leading-[1.7]">
 							Nothing here yet.
-							<Link class="font-semibold text-blue-700" :href="route('profile.edit')">Write a short bio</Link>
+							<Link class="font-semibold text-blue-700" :href="route('settings')">Write a short bio</Link>
 							so {{ isStudent ? 'recruiters know who you are' : 'students know what you do' }}.
 						</p>
 					</div>
@@ -115,7 +115,7 @@ const strength = computed(() =>
 				<section v-if="isStudent" class="bg-white border border-line rounded-[18px] mb-[18px]">
 					<div class="flex items-center justify-between px-[22px] py-[18px] border-b border-line-2">
 						<h3 class="font-display text-[16.5px] font-semibold">Skills</h3>
-						<Link class="inline-flex items-center gap-[7px] text-[13px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-3 py-[7px] rounded-[9px] cursor-pointer hover:bg-blue-100 transition-colors [&_svg]:w-3.5 [&_svg]:h-3.5" :href="route('profile.edit')"><span class="contents" v-html="icons.pencil"></span> Edit</Link>
+						<Link class="inline-flex items-center gap-[7px] text-[13px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-3 py-[7px] rounded-[9px] cursor-pointer hover:bg-blue-100 transition-colors [&_svg]:w-3.5 [&_svg]:h-3.5" :href="route('settings')"><span class="contents" v-html="icons.pencil"></span> Edit</Link>
 					</div>
 					<div class="px-[22px] py-5">
 						<div v-if="profile.skills?.length" class="flex flex-wrap gap-[9px]">

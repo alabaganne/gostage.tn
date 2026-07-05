@@ -88,6 +88,41 @@ class ProfileController extends Controller
 
     public function destroy(Request $request)
     {
-        // delete account
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $user = $request->user();
+
+        \Illuminate\Support\Facades\Auth::logout();
+
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+
+    public function settings()
+    {
+        $user = auth()->user();
+        $userable = $user->userable;
+
+        return Inertia::render('Settings', [
+            'fields' => Field::all(),
+            'cities' => City::all(),
+            'settings' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone_number' => $user->phone_number,
+                'linkedin_profile_url' => $user->linkedin_profile_url,
+                'userable_type' => $user->userable_type,
+                'about' => $userable->about ?? null,
+                'website' => $userable->website ?? null,
+                'city_id' => $userable->city_id ?? null,
+                'field_id' => $userable->field_id ?? null,
+            ],
+        ]);
     }
 }

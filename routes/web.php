@@ -102,6 +102,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/settings', [ProfileController::class, 'settings'])->name('settings');
+    Route::put('/password', [\App\Http\Controllers\Auth\PasswordController::class, 'update'])->name('password.change');
     // Resources
     Route::resource('internships', InternshipController::class)->except(['index', 'show']);
     Route::resource('companies', CompanyController::class);
