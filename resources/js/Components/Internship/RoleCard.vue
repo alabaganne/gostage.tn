@@ -18,6 +18,9 @@ const icons = {
 const page = usePage();
 const isStudent = computed(() => page.props.auth?.user?.userable_type === 'student');
 
+const WORK_TYPES = { remote: 'Remote', hybrid: 'Hybrid', onsite: 'On-site' };
+const payLabel = (pay) => `$${pay.amount}/${pay.unit === 'hour' ? 'hr' : 'mo'}`;
+
 const toggleSave = () => {
 	router.post(route('likes.store', props.internship.id), {}, { preserveScroll: true });
 };
@@ -37,8 +40,9 @@ const toggleSave = () => {
 					</div>
 				</div>
 				<div class="flex flex-wrap gap-[18px] mb-3.5 [&_span]:flex [&_span]:items-center [&_span]:gap-1.5 [&_span]:text-[13.5px] [&_span]:text-muted [&_span]:font-medium [&_svg]:w-[15px] [&_svg]:h-[15px] [&_svg]:text-muted-2">
-					<span><span class="contents" v-html="icons.briefcase"></span>{{ internship.field.name }}</span>
-					<span><span class="contents" v-html="icons.clock"></span>Closes {{ internship.closing_at }}</span>
+					<span v-if="internship.work_type"><span class="contents" v-html="icons.pin"></span>{{ WORK_TYPES[internship.work_type] || internship.work_type }}</span>
+					<span v-if="internship.duration_weeks"><span class="contents" v-html="icons.clock"></span>{{ internship.duration_weeks }} weeks</span>
+					<span><span class="contents" v-html="icons.briefcase"></span>{{ internship.term || internship.field.name }}</span>
 				</div>
 				<div v-if="internship.skills?.length" class="flex flex-wrap gap-[7px]">
 					<span v-for="skill in internship.skills" :key="skill" class="inline-flex items-center px-[11px] py-[5px] rounded-lg text-xs font-semibold bg-paper-3 text-ink-700">{{ skill }}</span>
@@ -58,6 +62,10 @@ const toggleSave = () => {
 					@click="toggleSave"
 					v-html="icons.save"
 				></button>
+				<div v-if="internship.pay" class="text-right">
+					<b class="font-display text-[17px] block">{{ payLabel(internship.pay) }}</b>
+					<span class="text-xs text-muted">Paid</span>
+				</div>
 			</div>
 		</div>
 		<div class="flex items-center justify-between w-full mt-[18px] border-t border-line-2">

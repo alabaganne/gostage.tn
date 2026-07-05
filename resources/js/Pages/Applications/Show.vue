@@ -30,20 +30,36 @@ const icons = {
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
 const isStudent = computed(() => user.value?.userable_type === 'student');
+// Legacy boolean statuses map onto the enum introduced with the redesign.
+const normalizedStatus = computed(() => {
+	const status = props.application.status;
+	if (status === true || status === 'accepted') return 'offer';
+	if (status === false || status === 'rejected') return 'closed';
+	return status || 'submitted';
+});
+
+const open = computed(() => !['offer', 'closed'].includes(normalizedStatus.value));
+
 const canReply = computed(
-	() => (user.value?.userable_type === 'company' || user.value?.is_admin) && props.application.status === null
+	() => (user.value?.userable_type === 'company' || user.value?.is_admin) && open.value
 );
 
-// Legacy status: null = in review, true = accepted, false = not selected.
+const STAGES = {
+	submitted: { label: 'Submitted', color: '#b45309', bg: '#fef3c7', border: '#d97706', title: 'Application submitted' },
+	viewed: { label: 'Viewed', color: '#1d4ed8', bg: '#eef4ff', border: '#2563eb', title: 'Viewed by the company' },
+	review: { label: 'In review', color: '#b45309', bg: '#fef3c7', border: '#d97706', title: 'Application in review' },
+	interview: { label: 'Interview', color: '#047857', bg: '#dcfce7', border: '#059669', title: 'Interview stage' },
+	offer: { label: 'Offer', color: '#6d28d9', bg: '#ede9fe', border: '#7c3aed', title: 'Offer extended' },
+	closed: { label: 'Not selected', color: '#5b6677', bg: '#eef2f9', border: '#8a93a3', title: 'Not selected' },
+};
+
 const stage = computed(() => {
-	const status = props.application.status;
-	if (status === true || status === 'accepted') {
-		return { label: 'Accepted', color: '#047857', bg: '#dcfce7', border: '#059669', title: 'Application accepted', note: `${props.application.company.name} accepted this application.` };
-	}
-	if (status === false || status === 'rejected' || status === 'closed') {
-		return { label: 'Not selected', color: '#5b6677', bg: '#eef2f9', border: '#8a93a3', title: 'Not selected', note: 'This application was closed.' };
-	}
-	return { label: 'In review', color: '#b45309', bg: '#fef3c7', border: '#d97706', title: 'Application in review', note: `${props.application.company.name} is reviewing this application.` };
+	const base = STAGES[normalizedStatus.value] || STAGES.submitted;
+	const notes = {
+		offer: `${props.application.company.name} wants to move forward with this application.`,
+		closed: 'This application was closed.',
+	};
+	return { ...base, note: notes[normalizedStatus.value] || `${props.application.company.name} is reviewing this application.` };
 });
 
 const counterpart = computed(() =>
@@ -109,7 +125,7 @@ const withdraw = () => {
 							<b class="text-[15px] font-display font-semibold block">Application submitted</b>
 							<div class="text-[13px] text-muted mt-[3px]">{{ application.created_at }}</div>
 						</div>
-						<div v-if="application.status !== null" class="relative">
+						<div v-if="!open" class="relative">
 							<span class="absolute -left-[34px] top-0 w-6 h-6 rounded-full border-2 text-white grid place-items-center shadow-[0_0_0_4px_rgba(5,150,105,.18)] [&_svg]:w-[13px] [&_svg]:h-[13px]" :style="{ background: stage.border, borderColor: stage.border }" v-html="icons.dot"></span>
 							<b class="text-[15px] font-display font-semibold block">{{ stage.title }}</b>
 							<div class="text-[13px] text-muted mt-[3px]">Updated {{ application.updated_at }}</div>
@@ -161,10 +177,10 @@ const withdraw = () => {
 			<div class="flex flex-col gap-4 sticky top-[94px]">
 				<section v-if="canReply" class="bg-white border border-line rounded-[18px] px-6 py-[22px]">
 					<h3 class="text-sm tracking-[.04em] text-muted font-bold font-display mb-4">REVIEW</h3>
-					<button class="w-full justify-center inline-flex items-center gap-2.5 font-semibold text-[15px] px-[22px] py-[13px] rounded-[12px] bg-blue-600 text-white hover:bg-blue-700 transition-colors [&_svg]:w-[17px] [&_svg]:h-[17px]" type="button" @click="reply(true)">
+					<button class="w-full justify-center inline-flex items-center gap-2.5 font-semibold text-[15px] px-[22px] py-[13px] rounded-[12px] bg-blue-600 text-white hover:bg-blue-700 transition-colors [&_svg]:w-[17px] [&_svg]:h-[17px]" type="button" @click="reply('offer')">
 						Advance to offer <span class="contents" v-html="icons.arrow"></span>
 					</button>
-					<button class="w-full justify-center mt-2.5 inline-flex items-center font-semibold text-[15px] px-[22px] py-[13px] rounded-[12px] bg-white text-ink border border-line hover:border-blue-300 hover:text-blue-700 transition-all" type="button" @click="reply(false)">
+					<button class="w-full justify-center mt-2.5 inline-flex items-center font-semibold text-[15px] px-[22px] py-[13px] rounded-[12px] bg-white text-ink border border-line hover:border-blue-300 hover:text-blue-700 transition-all" type="button" @click="reply('closed')">
 						Disqualify
 					</button>
 				</section>
@@ -191,7 +207,7 @@ const withdraw = () => {
 					</Link>
 				</section>
 
-				<template v-if="isStudent && application.status === null">
+				<template v-if="isStudent && open">
 					<Link class="w-full justify-center inline-flex items-center font-semibold text-[15px] px-[22px] py-[13px] rounded-[12px] bg-white text-ink border border-line hover:border-blue-300 hover:text-blue-700 transition-all" :href="route('applications.edit', application.id)">Edit application</Link>
 					<button class="w-full justify-center inline-flex items-center font-semibold text-[15px] px-[22px] py-[13px] rounded-[12px] bg-white text-[#dc2626] border border-[#fecaca] hover:bg-[#fef2f2] transition-colors" type="button" @click="withdraw">Withdraw application</button>
 				</template>

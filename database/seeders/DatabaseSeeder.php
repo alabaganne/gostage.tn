@@ -65,15 +65,39 @@ class DatabaseSeeder extends Seeder
             ['Frontend Developer Intern','Novabyte','Web Development','Tunis','Build polished Vue interfaces from design specs and connect them to Laravel APIs.',['Vue','Laravel','Figma']],
         ];
 
+        $details = [
+            ['remote', 16, 'Summer 2026', 28, 'hour'],
+            ['remote', 12, 'Summer 2026', 24, 'hour'],
+            ['onsite', 16, 'Fall 2026', 25, 'hour'],
+            ['hybrid', 16, 'Fall 2026', 22, 'hour'],
+            ['remote', 12, 'Summer 2026', 3200, 'month'],
+            ['onsite', 12, 'Summer 2026', null, null],
+            ['remote', 24, 'Fall 2026', 23, 'hour'],
+            ['hybrid', 12, 'Summer 2026', 2000, 'month'],
+        ];
+
         $internships = collect();
-        foreach ($roles as [$title,$company,$field,$city,$description,$skillNames]) {
-            $internship = Internship::create(['title' => $title, 'description' => $description, 'company_id' => $companies[$company]->id, 'field_id' => $fields[$field]->id, 'city_id' => $cities[$city]->id, 'closing_at' => now()->addDays(rand(24, 90))]);
+        foreach ($roles as $index => [$title,$company,$field,$city,$description,$skillNames]) {
+            [$workType, $durationWeeks, $term, $payAmount, $payUnit] = $details[$index % count($details)];
+            $internship = Internship::create([
+                'title' => $title,
+                'description' => $description,
+                'company_id' => $companies[$company]->id,
+                'field_id' => $fields[$field]->id,
+                'city_id' => $cities[$city]->id,
+                'closing_at' => now()->addDays(rand(24, 90)),
+                'work_type' => $workType,
+                'duration_weeks' => $durationWeeks,
+                'term' => $term,
+                'pay_amount' => $payAmount,
+                'pay_unit' => $payUnit,
+            ]);
             $internship->skills()->sync(collect($skillNames)->map(fn ($name) => $skills[$name]->id));
             $internships->push($internship);
         }
 
         foreach ($internships->take(4) as $i => $internship) {
-            Application::create(['student_id' => $student->id, 'internship_id' => $internship->id, 'company_id' => $internship->company_id, 'cover_letter' => 'I am excited about this role and believe my Laravel/Vue background makes me a strong fit.', 'message' => 'Available to start immediately and happy to interview this week.', 'status' => [true, null, null, false][$i]]);
+            Application::create(['student_id' => $student->id, 'internship_id' => $internship->id, 'company_id' => $internship->company_id, 'cover_letter' => 'I am excited about this role and believe my Laravel/Vue background makes me a strong fit.', 'message' => 'Available to start immediately and happy to interview this week.', 'status' => ['interview', 'review', 'submitted', 'offer'][$i]]);
         }
         $student->likes()->sync($internships->slice(1, 5)->pluck('id'));
 

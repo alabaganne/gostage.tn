@@ -118,6 +118,10 @@ class InternshipController extends Controller
 				'description' => $internship->description,
 				'closing_at' => $internship->closing_at->format('F d, Y'),
 				'created_at' => $internship->created_at->diffForHumans(),
+				'work_type' => $internship->work_type,
+				'duration_weeks' => $internship->duration_weeks,
+				'term' => $internship->term,
+				'pay' => $internship->pay_amount ? ['amount' => $internship->pay_amount, 'unit' => $internship->pay_unit] : null,
 				'field' => [
 					'name' => $internship->field->name,
 				],

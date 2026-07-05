@@ -29,6 +29,10 @@ class InternshipResource extends JsonResource
 			'title' => $this->title,
 			'description' => $this->description,
 			'closing_at' => $this->closing_at->format('F d, Y'),
+			'work_type' => $this->work_type,
+			'duration_weeks' => $this->duration_weeks,
+			'term' => $this->term,
+			'pay' => $this->pay_amount ? ['amount' => $this->pay_amount, 'unit' => $this->pay_unit] : null,
 			'created_at' => $this->created_at->diffForHumans(),
 			'company' => [
 				'id' => $this->company->id,

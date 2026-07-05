@@ -54,6 +54,8 @@ const descriptionHtml = computed(() => {
 		.join('');
 });
 
+const WORK_TYPES = { remote: 'Remote', hybrid: 'Hybrid', onsite: 'On-site' };
+
 const showLoginModal = ref(false);
 const openLoginModal = () => (showLoginModal.value = true);
 const closeLoginModal = () => (showLoginModal.value = false);
@@ -97,7 +99,8 @@ const toggleLike = () => {
 							</div>
 						</div>
 						<div class="flex flex-wrap gap-2.5 mt-[22px] [&_.m]:flex [&_.m]:items-center [&_.m]:gap-[7px] [&_.m]:text-[13.5px] [&_.m]:text-ink-700 [&_.m]:font-medium [&_.m]:bg-paper-2 [&_.m]:border [&_.m]:border-line-2 [&_.m]:px-[13px] [&_.m]:py-2 [&_.m]:rounded-[9px] [&_svg]:w-[15px] [&_svg]:h-[15px] [&_svg]:text-blue-600">
-							<span class="m"><span class="contents" v-html="icons.pin"></span>{{ internship.city.name }}</span>
+							<span class="m"><span class="contents" v-html="icons.pin"></span>{{ internship.city.name }}<template v-if="internship.work_type"> · {{ WORK_TYPES[internship.work_type] || internship.work_type }}</template></span>
+							<span v-if="internship.duration_weeks" class="m"><span class="contents" v-html="icons.clock"></span>{{ internship.duration_weeks }} weeks</span>
 							<span class="m"><span class="contents" v-html="icons.calendar"></span>Posted {{ internship.created_at }}</span>
 							<span class="m"><span class="contents" v-html="icons.clock"></span>Closing {{ internship.closing_at }}</span>
 						</div>
@@ -118,6 +121,10 @@ const toggleLike = () => {
 				<!-- RIGHT -->
 				<div class="flex flex-col gap-4 sticky top-[94px]">
 					<section class="bg-white border border-line rounded-[18px] p-6">
+						<template v-if="internship.pay">
+							<div class="flex items-baseline gap-2 mb-1"><b class="font-display text-[30px] font-semibold">${{ internship.pay.amount }}</b><span class="text-sm text-muted">/ {{ internship.pay.unit }}</span></div>
+							<p class="text-[13.5px] text-muted mb-5">Paid internship<template v-if="internship.term"> · {{ internship.term }}</template></p>
+						</template>
 						<!-- Company managing its own role -->
 						<template v-if="ownsIt">
 							<Link class="w-full justify-center inline-flex items-center gap-2.5 font-semibold text-base px-7 py-4 rounded-[13px] bg-blue-600 text-white hover:bg-blue-700 transition-colors [&_svg]:w-[17px] [&_svg]:h-[17px]" :href="route('internships.applications.index', internship.id)">

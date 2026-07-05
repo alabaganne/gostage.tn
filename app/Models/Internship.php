@@ -18,7 +18,13 @@ class Internship extends Model
         'field_id',
 		'city_id',
         'attachments',
-        'closing_at'
+        'closing_at',
+        'work_type',
+        'duration_weeks',
+        'term',
+        'pay_amount',
+        'pay_unit',
+        'status',
     ];
 
     protected $dates = ['created_at', 'updated_at', 'closing_at'];

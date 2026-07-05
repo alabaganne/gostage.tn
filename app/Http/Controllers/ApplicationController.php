@@ -152,7 +152,7 @@ class ApplicationController extends Controller
 
         $application->update(
             $request->validate([
-                'status' => 'required|boolean'
+                'status' => 'required|in:viewed,review,interview,offer,closed'
             ])
         );
 

@@ -34,7 +34,7 @@ class DashboardController extends Controller
             );
             
             $props['applications_count'] = Application::where($query_field, $user->userable->id)
-                ->where('status', null)
+                ->whereNotIn('status', ['offer', 'closed'])
                 ->get()
                 ->count();
         }
