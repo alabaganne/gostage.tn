@@ -21,6 +21,7 @@ class InternshipController extends Controller
 			'filters' => $request->only('fields', 'cities', 'companies', 'search'),
 			'internships' => InternshipResource::collection(
 				Internship::with('company', 'field', 'city', 'skills')
+					->withCount('applications')
 					->withFilters(
 						$request->input('fields', []),
 						$request->input('companies', []),

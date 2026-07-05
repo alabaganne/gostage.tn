@@ -41,6 +41,9 @@ class InternshipResource extends JsonResource
 				'name' => $this->field->name,
 			],
 			'attachments' => $this->attachments ?: [],
+			'skills' => $this->whenLoaded('skills', fn () => $this->skills->pluck('name')),
+			'applications_count' => $this->when($this->applications_count !== null, $this->applications_count),
+			'is_new' => $this->created_at->gt(now()->subWeek()),
 			'application' => $application ? [
 				'created_at' => $application->created_at->format('F d, Y')
 			] : null,
