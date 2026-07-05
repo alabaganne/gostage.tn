@@ -1,249 +1,120 @@
-# Stagi.tn - Internship Management Platform
+# Internly — Internship Platform
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel">
-</p>
+Internly connects students with companies that are hiring interns. Students browse public
+internship listings, apply online, and track every application; companies publish roles and
+manage their pipeline — all from one clean workspace.
 
-## About Stagi.tn
+The UI implements the Internly design system. The source of truth for the visuals lives in
+`design/DESIGN.md` (tokens, typography, component patterns) and `design/INTEGRATION.md`
+(how the design screens map onto Inertia layouts and pages).
 
-Stagi.tn is a comprehensive internship management platform designed for the Tunisian market. It connects students, companies, and university supervisors to streamline the internship application and management process.
+## Tech stack
 
-### Key Features
+- **Laravel 12** (PHP 8.2+) with the slim `bootstrap/app.php` skeleton
+- **Inertia.js v2** with **Vue 3** (`@inertiajs/vue3`, `<script setup>` for new code)
+- **Vite** (`laravel-vite-plugin`) for assets
+- **Tailwind CSS 3.4** with the Internly design tokens in `tailwind.config.js`
+- **MySQL** database, **Pusher/Laravel Echo** for realtime messaging (optional)
 
-- **Multi-User Platform**: Supports students, companies, university supervisors, and company supervisors
-- **Internship Management**: Post, browse, and manage internship opportunities
-- **Application System**: Complete application workflow with cover letters and attachments
-- **Real-time Communication**: Built-in messaging system between all user types
-- **Advanced Filtering**: Search internships by field, company, city, and keywords
-- **Dashboard Analytics**: Role-based dashboards with relevant statistics
-- **File Management**: Support for attachments in applications and messages
-- **Notification System**: Real-time notifications for important events
-
-### User Types
-
-1. **Students** - Browse internships, apply with cover letters, track applications, communicate with companies
-2. **Companies** - Post internships, review applications, manage company supervisors, communicate with students
-3. **University Supervisors** - Oversee student progress, monitor applications, communicate with stakeholders
-4. **Company Supervisors** - Supervise specific internships, review applications, mentor students
-
-## Tech Stack
-
-### Backend
-- **Laravel 8** - PHP web framework
-- **PHP 7.3+ or 8.0+** - Server-side language
-- **MySQL/PostgreSQL** - Database
-- **Laravel Sanctum** - API authentication
-- **Laravel Breeze** - Authentication scaffolding
-- **Pusher** - Real-time messaging and notifications
-- **Laravel Echo** - WebSocket client
-
-### Frontend
-- **Vue.js 3** - Progressive JavaScript framework
-- **Inertia.js** - Modern monolith approach (SPA-like experience)
-- **Tailwind CSS** - Utility-first CSS framework
-- **Laravel Mix** - Asset compilation
-- **Vuex 4** - State management
-- **Axios** - HTTP client
-
-## Prerequisites
-
-Before running this application, make sure you have the following installed:
-
-- **PHP 7.3+ or 8.0+** with extensions: BCMath, Ctype, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML
-- **Composer** - PHP dependency manager
-- **Node.js & NPM** - For frontend asset compilation
-- **MySQL/PostgreSQL** - Database server
-- **Pusher Account** - For real-time features (optional for development)
-
-## Installation & Setup
-
-### 1. Clone the Repository
+## Running the app
 
 ```bash
-git clone <repository-url>
-cd stagi.tn
-```
-
-### 2. Install PHP Dependencies
-
-```bash
+# 1. Install dependencies
 composer install
-```
-
-### 3. Install Node.js Dependencies
-
-```bash
 npm install
-```
 
-### 4. Environment Configuration
-
-```bash
+# 2. Environment
 cp .env.example .env
 php artisan key:generate
+# set DB_DATABASE / DB_USERNAME / DB_PASSWORD in .env (MySQL)
+
+# 3. Database + demo data
+php artisan migrate:fresh --seed
+
+# 4. Run it (two terminals)
+php artisan serve     # http://127.0.0.1:8000
+npm run dev           # Vite dev server (HMR)
 ```
 
-Edit `.env` file with your database and Pusher credentials:
+For a production-style build use `npm run build` instead of `npm run dev`.
 
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=stagi_tn
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
+Realtime messaging broadcasts over Pusher: set the `PUSHER_*` / `VITE_PUSHER_*` variables and
+run a websocket server if you want live inbox updates. Messages still work without it —
+broadcast failures are logged and the message is saved. There are no queued jobs by default
+(`QUEUE_CONNECTION=sync`); if you switch to a queue driver, also run `php artisan queue:work`.
 
-PUSHER_APP_ID=your_pusher_app_id
-PUSHER_APP_KEY=your_pusher_key
-PUSHER_APP_SECRET=your_pusher_secret
-PUSHER_APP_CLUSTER=your_pusher_cluster
-```
+### Demo accounts
 
-### 5. Database Setup
+The seeder creates a realistic demo world (Atlas Cloud, Novabyte, Greenfield, Stride Labs,
+Lumen, Realinflo…) so every screen renders populated. Password is `password` for all:
 
-```bash
-php artisan migrate
-php artisan db:seed
-```
+| Account | Email |
+|---|---|
+| Student | `student@example.com` |
+| Company (Realinflo) | `company@example.com` |
+| Company (Atlas Cloud) | `atlascloud@example.com` |
+| Admin | `admin@example.com` |
 
-### 6. Storage Setup
+### Tests
 
-```bash
-php artisan storage:link
-```
-
-### 7. Compile Frontend Assets
-
-For development:
-```bash
-npm run dev
-```
-
-For production:
-```bash
-npm run production
-```
-
-### 8. Start the Development Server
-
-```bash
-php artisan serve
-```
-
-The application will be available at `http://localhost:8000`
-
-## Development
-
-### Running Tests
+Tests run against a separate MySQL database (`issatso_internships_testing` — create it once):
 
 ```bash
 php artisan test
 ```
 
-### Code Quality
+Coverage includes auth (Breeze), applying, saving roles, messaging, and a smoke test that
+every ported page returns 200 with real Inertia props.
 
-```bash
-# Run PHP CS Fixer (if configured)
-./vendor/bin/php-cs-fixer fix
+## What changed in the redesign
 
-# Run PHPStan (if configured)
-./vendor/bin/phpstan analyse
-```
+**Stack upgrade (incremental, one commit per step)**
 
-### Database
+- Laravel 8 → 9 → 10 → 12, ending on the Laravel 11+ slim skeleton: no HTTP/Console kernels,
+  middleware and routing configured in `bootstrap/app.php`, providers in
+  `bootstrap/providers.php`, minimal `config/app.php`.
+- Laravel Mix replaced with Vite (`vite.config.mjs`, `@vite` directive, `VITE_*` env vars).
+  The Node 16 pin is gone — the toolchain runs on current Node.
+- Inertia upgraded to v2 (`@inertiajs/vue3` + `inertia-laravel` v2): `createInertiaApp`,
+  `useForm()` everywhere the old `$inertia.form()` was, `Link` registered as `InertiaLink`
+  so older templates keep working.
+- Tailwind 2 → 3.4 with the design tokens ported verbatim from the design project
+  (`blue`/`navy`/`ink`/`muted`/`line`/`paper` ramps, Space Grotesk + Plus Jakarta Sans,
+  radii, shadows, `max-w-wrap`). Tailwind 4 was deliberately deferred: the design system
+  ships a v3-format `tailwind.config.js` and fidelity won.
 
-```bash
-# Create a new migration
-php artisan make:migration create_table_name
+**UI (Phase 2)**
 
-# Run migrations
-php artisan migrate
+- New persistent layouts: `AppShell` (navy sidebar + topbar workspace chrome),
+  `MarketingLayout` (sticky translucent header + navy footer), `AuthSplit` (login/signup),
+  plus a global `v-reveal` scroll-reveal directive.
+- Every design screen ported with the design's Tailwind classes verbatim: landing, about,
+  blog + article, contact, browse (public) / internships (workspace), internship detail
+  (public with login-required modal, and workspace), login, role-aware signup, dashboard,
+  applications + application detail, saved roles, messages, companies + company detail,
+  profile, settings.
+- Shared UI primitives: `Ui/StatusPill` (design status colour table), `Ui/CompanyLogo`
+  (per-company 140° gradients), `Ui/Pagination`, `Internship/RoleCard`.
+- Pages render real controller data only — sections without backing data are hidden rather
+  than filled with mock content.
 
-# Rollback migrations
-php artisan migrate:rollback
+**Backend (Phase 3)**
 
-# Seed database
-php artisan db:seed
-```
+- `internships` gained `work_type`, `duration_weeks`, `term`, `pay_amount`, `pay_unit`,
+  `status`; all exposed through resources and shown on cards and detail rails.
+- `applications.status` migrated from a nullable boolean to the design's pipeline enum
+  (`submitted → viewed → review → interview → offer → closed`) with a data-converting,
+  reversible migration. Policies, the company review flow, and dashboards use the enum.
+- New: `/settings` (account + security panels), authenticated password change
+  (`PUT /password`), password-confirmed account deletion, `messages/{user}` deep-linking
+  into the inbox, and an Inertia-friendly like toggle.
+- Seeder produces the design's sample world with varied application stages so every screen
+  demos well.
 
-## Laravel Version Migration
-
-**Note**: This project is currently running on Laravel 8. Plans are in place to migrate to the latest Laravel version.
-
-### Migration Checklist
-
-When migrating to the latest Laravel version, consider the following:
-
-1. **Update Dependencies**
-   - Update Laravel framework version
-   - Update all packages to compatible versions
-   - Check for breaking changes in major dependencies
-
-2. **Code Updates**
-   - Review deprecated methods and classes
-   - Update middleware configurations
-   - Check for changes in authentication system
-   - Review route definitions
-
-3. **Frontend Updates**
-   - Update Inertia.js to latest version
-   - Update Vue.js and related packages
-   - Review asset compilation setup
-   - Update Tailwind CSS configuration
-
-4. **Database**
-   - Review migration files for compatibility
-   - Check for changes in Eloquent ORM
-   - Update model relationships if needed
-
-5. **Testing**
-   - Update test configurations
-   - Review test methods for compatibility
-   - Ensure all tests pass after migration
-
-## Project Structure
-
-```
-stagi.tn/
-├── app/
-│   ├── Http/Controllers/     # Application controllers
-│   ├── Models/              # Eloquent models
-│   ├── Policies/            # Authorization policies
-│   └── Notifications/       # Notification classes
-├── database/
-│   ├── migrations/          # Database migrations
-│   ├── seeders/            # Database seeders
-│   └── factories/          # Model factories
-├── resources/
-│   ├── js/
-│   │   ├── Pages/          # Vue page components
-│   │   ├── Components/     # Reusable Vue components
-│   │   └── Layouts/        # Page layouts
-│   └── css/               # Stylesheets
-├── routes/
-│   └── web.php            # Web routes
-└── tests/                 # Application tests
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-## Support
-
-For support and questions:
-- Create an issue in the repository
-- Contact the development team
-- Check the documentation in the `.cursor/rules/` directory
-
----
-
-**Built with ❤️ for the Tunisian internship ecosystem**
+**Schema mapping notes** — the existing schema equivalents were kept where they already
+served the screens: `likes` acts as the saved-internships pivot, attachments live as JSON
+columns on internships/applications, messaging is user-to-user (`messages.from_id/to_id`),
+and company identity (name/email) lives on the owning `users` row. Candidates for a future
+pass: dedicated `application_events` timeline rows, `educations`/`experiences`/
+`profile_links` tables for richer student profiles, and notification/privacy preferences
+behind the settings toggles.
