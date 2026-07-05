@@ -133,6 +133,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/internships/{internship}/applications', InternshipApplicationController::class)->name('internships.applications.index');
 	// Likes
     Route::get('/likes', [LikeController::class, 'index'])->name('likes.index');
+    Route::redirect('/saved', '/likes');
     Route::post('/like/{internship}', [LikeController::class, 'store'])->name('likes.store');
 	// Messages
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');

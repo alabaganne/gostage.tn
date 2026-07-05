@@ -18,34 +18,51 @@ const icons = {
 	profile: '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
 	settings: '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 00-1.7-1l-.4-2.5h-4l-.4 2.5a7 7 0 00-1.7 1l-2.4-1-2 3.5L4 11a7 7 0 000 2l-2 1.5 2 3.5 2.4-1a7 7 0 001.7 1l.4 2.5h4l.4-2.5a7 7 0 001.7-1l2.4 1 2-3.5-2-1.5a7 7 0 00.1-1z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
 	logout: '<svg viewBox="0 0 24 24" fill="none"><path d="M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3M10 17l-5-5 5-5M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+	students: '<svg viewBox="0 0 24 24" fill="none"><path d="M3 8l9-4 9 4-9 4-9-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7 10v5c0 1 2.2 2.5 5 2.5s5-1.5 5-2.5v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+	fields: '<svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h10M4 17h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+	skills: '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-1.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
 };
-
-const groups = [
-	{
-		label: 'Workspace',
-		items: [
-			{ id: 'dashboard', label: 'Dashboard', route: 'dashboard' },
-			{ id: 'applications', label: 'Applications', route: 'applications.index' },
-			{ id: 'internships', label: 'Internships', route: 'internships.index' },
-			{ id: 'saved', label: 'Saved roles', route: 'likes.index' },
-			{ id: 'messages', label: 'Messages', route: 'messages.index' },
-			{ id: 'companies', label: 'Companies', route: 'companies.index' },
-		],
-	},
-	{
-		label: 'Account',
-		items: [
-			{ id: 'profile', label: 'Profile', route: 'profile.show' },
-			{ id: 'settings', label: 'Settings', route: 'settings' },
-		],
-	},
-];
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
 const isCompany = computed(() => user.value?.userable_type === 'company');
-const tag = computed(() => (isCompany.value ? 'COMPANY WORKSPACE' : 'STUDENT WORKSPACE'));
-const roleLabel = computed(() => (isCompany.value ? 'Company' : 'Student'));
+const isStudent = computed(() => user.value?.userable_type === 'student');
+const isAdmin = computed(() => !!user.value?.is_admin);
+
+// Saved roles is a student-only feature; admins get the catalog screens.
+const groups = computed(() => {
+	const workspace = [
+		{ id: 'dashboard', label: 'Dashboard', route: 'dashboard' },
+		...(isAdmin.value ? [] : [{ id: 'applications', label: 'Applications', route: 'applications.index' }]),
+		{ id: 'internships', label: 'Internships', route: 'internships.index' },
+		...(isStudent.value ? [{ id: 'saved', label: 'Saved roles', route: 'likes.index' }] : []),
+		{ id: 'messages', label: 'Messages', route: 'messages.index' },
+		{ id: 'companies', label: 'Companies', route: 'companies.index' },
+	];
+
+	const account = [
+		{ id: 'profile', label: 'Profile', route: 'profile.show' },
+		{ id: 'settings', label: 'Settings', route: 'settings' },
+	];
+
+	const sections = [{ label: 'Workspace', items: workspace }];
+	if (isAdmin.value) {
+		sections.push({
+			label: 'Catalog',
+			items: [
+				{ id: 'students', label: 'Students', route: 'students.index' },
+				{ id: 'fields', label: 'Fields', route: 'fields.index' },
+				{ id: 'skills', label: 'Skills', route: 'skills.index' },
+			],
+		});
+	}
+	sections.push({ label: 'Account', items: account });
+	return sections;
+});
+const tag = computed(() =>
+	isAdmin.value ? 'ADMIN WORKSPACE' : isCompany.value ? 'COMPANY WORKSPACE' : 'STUDENT WORKSPACE'
+);
+const roleLabel = computed(() => (isAdmin.value ? 'Admin' : isCompany.value ? 'Company' : 'Student'));
 
 const initials = computed(() =>
 	(user.value?.name || '')

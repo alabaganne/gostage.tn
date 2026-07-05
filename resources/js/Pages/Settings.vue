@@ -176,7 +176,7 @@ const deleteAccount = () => {
 								<div class="text-xs text-muted-2 mt-[7px]">Brief intro shown at the top of your profile.</div>
 							</div>
 						</div>
-						<div class="px-[22px] py-4 border-t border-line-2 flex justify-end gap-2.5 bg-paper-2 rounded-b-[18px]">
+						<div class="px-[22px] py-4 border-t border-line-2 flex justify-end gap-2.5 bg-white rounded-b-[18px]">
 							<span v-if="accountForm.recentlySuccessful" class="self-center text-[13.5px] font-semibold text-[#047857]">Saved.</span>
 							<button class="cbtn bg-blue-600 text-white hover:bg-blue-700" type="submit" :disabled="accountForm.processing">Save changes</button>
 						</div>
@@ -208,14 +208,14 @@ const deleteAccount = () => {
 								</div>
 							</div>
 						</div>
-						<div class="px-[22px] py-4 border-t border-line-2 flex justify-end gap-2.5 bg-paper-2 rounded-b-[18px]">
+						<div class="px-[22px] py-4 border-t border-line-2 flex justify-end gap-2.5 bg-white rounded-b-[18px]">
 							<span v-if="passwordForm.recentlySuccessful" class="self-center text-[13.5px] font-semibold text-[#047857]">Password updated.</span>
 							<button class="cbtn bg-blue-600 text-white hover:bg-blue-700" type="submit" :disabled="passwordForm.processing">Update password</button>
 						</div>
 					</form>
 
-					<div class="bg-white border border-[#fecaca] rounded-[18px] mb-[18px]">
-						<div class="px-[22px] py-[18px] border-b border-[#fee2e2]">
+					<div class="bg-white border border-line rounded-[18px] mb-[18px]">
+						<div class="px-[22px] py-[18px] border-b border-line-2">
 							<h3 class="font-display text-[16.5px] font-semibold text-[#b91c1c]">Danger zone</h3>
 							<p class="text-[13px] text-muted mt-[3px]">Irreversible actions. Please be certain.</p>
 						</div>
@@ -225,7 +225,7 @@ const deleteAccount = () => {
 									<b class="text-[14.5px] font-semibold block">Delete account</b>
 									<span class="text-[13px] text-muted block mt-0.5">Permanently remove your profile, applications, and messages.</span>
 								</div>
-								<button class="cbtn !px-[18px] !py-2.5 bg-white text-[#dc2626] border border-[#fecaca] hover:bg-[#fef2f2] hover:border-[#fca5a5] whitespace-nowrap" type="button" @click="deleteAccount">
+								<button class="cbtn !px-[18px] !py-2.5 bg-[#dc2626] text-white hover:bg-[#b91c1c] whitespace-nowrap" type="button" @click="deleteAccount">
 									{{ confirmingDelete ? 'Click again to confirm' : 'Delete account' }}
 								</button>
 							</div>
