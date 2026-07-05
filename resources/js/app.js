@@ -1,4 +1,4 @@
-require("./bootstrap");
+import "./bootstrap";
 
 // Import modules...
 import { createApp, h } from "vue";
@@ -10,15 +10,18 @@ import { InertiaProgress } from "@inertiajs/progress";
 
 import store from "./store";
 
+import AuthenticatedLayout from "./Layouts/Authenticated.vue";
+
+const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
+
 const el = document.getElementById("app");
 
-import AuthenticatedLayout from "./Layouts/Authenticated";
 const app = createApp({
 	render: () =>
 		h(InertiaApp, {
 			initialPage: JSON.parse(el.dataset.page),
 			resolveComponent: (name) => {
-				const module = require(`./Pages/${name}`);
+				const module = pages[`./Pages/${name}.vue`];
 
 				if(!module.default.layout) {
 					module.default.layout = AuthenticatedLayout;
@@ -60,10 +63,10 @@ const app = createApp({
 	.use(InertiaPlugin)
 	.use(store);
 
-import Icon from "./Shared/Icon";
-import BrandLogo from "./Shared/BrandLogo";
-import Card from "./Shared/Card";
-import Table from "./Shared/Table";
+import Icon from "./Shared/Icon.vue";
+import BrandLogo from "./Shared/BrandLogo.vue";
+import Card from "./Shared/Card.vue";
+import Table from "./Shared/Table.vue";
 app.component('Icon', Icon);
 app.component('BrandLogo', BrandLogo);
 app.component('Card', Card);
