@@ -33,6 +33,9 @@
 	.qtab.is-active {
 		@apply text-blue-700 border-blue-600;
 	}
+	.pcard.is-active {
+		@apply border-blue-600 bg-blue-50;
+	}
 	.dbody ul {
 		@apply list-none flex flex-col gap-[11px] mb-1.5;
 	}
