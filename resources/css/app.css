@@ -33,6 +33,39 @@
 	.qtab.is-active {
 		@apply text-blue-700 border-blue-600;
 	}
+	.conv {
+		@apply flex gap-3 px-[18px] py-3.5 cursor-pointer border-b border-line-2 border-l-[3px] border-l-transparent transition-colors hover:bg-paper-2;
+	}
+	.conv.active {
+		@apply bg-blue-50 border-l-blue-600;
+	}
+	.prev {
+		@apply text-[13px] text-muted whitespace-nowrap overflow-hidden text-ellipsis leading-[1.4];
+	}
+	.prev.unread {
+		@apply text-ink font-semibold;
+	}
+	.daysep {
+		@apply text-center text-xs text-muted-2 font-semibold my-3.5;
+	}
+	.daysep span {
+		@apply bg-paper-3 px-3.5 py-[5px] rounded-full;
+	}
+	.bubble {
+		@apply max-w-[64%] px-[15px] py-[11px] rounded-2xl text-[14.5px] leading-[1.5] mb-[3px];
+	}
+	.bubble.them {
+		@apply self-start bg-white border border-line rounded-bl-[5px] text-ink-700;
+	}
+	.bubble.me {
+		@apply self-end bg-blue-600 text-white rounded-br-[5px];
+	}
+	.bubble .time {
+		@apply block text-[10.5px] mt-[5px] opacity-70 font-medium;
+	}
+	.bubble.me .time {
+		@apply text-right;
+	}
 	.chip {
 		@apply border-line bg-white text-ink-700 hover:border-blue-300;
 	}
