@@ -33,6 +33,12 @@
 	.qtab.is-active {
 		@apply text-blue-700 border-blue-600;
 	}
+	.chip {
+		@apply border-line bg-white text-ink-700 hover:border-blue-300;
+	}
+	.chip.is-active {
+		@apply bg-navy-900 border-navy-900 text-white hover:border-navy-900;
+	}
 	.pcard.is-active {
 		@apply border-blue-600 bg-blue-50;
 	}
