@@ -146,6 +146,28 @@
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M5 13l4 4L19 7' stroke='%232563eb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 		background-size: 12px;
 	}
+	.cover-grid::after {
+		content: "";
+		@apply absolute inset-0;
+		background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+		background-size: 40px 40px;
+	}
+	.art-body > * {
+		@apply max-w-[720px];
+	}
+	.art-body p {
+		@apply text-[18px] leading-[1.78] text-ink-700 mb-6;
+	}
+	.art-body h2 {
+		@apply font-display text-[28px] font-semibold mt-[46px] mb-4;
+	}
+	.art-body h3 {
+		@apply font-display text-[21px] font-semibold mt-[34px] mb-3;
+	}
+	.art-body .lead {
+		@apply !text-[21px] !leading-[1.65] !text-ink font-medium;
+	}
 }
 
 @keyframes bob {

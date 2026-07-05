@@ -95,6 +95,7 @@ Route::get('/blog/{slug}', function (string $slug) {
 
     return Inertia::render('Blog/Show', [
         'post' => $post,
+        'related' => collect(config('internly_blog'))->where('slug', '!=', $slug)->take(3)->values(),
     ]);
 })->name('blog.show');
 
