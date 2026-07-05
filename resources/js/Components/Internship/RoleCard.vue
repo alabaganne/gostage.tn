@@ -49,8 +49,10 @@ const toggleSave = () => {
 				<span v-else-if="internship.is_new" class="text-[11px] font-bold text-blue-700 bg-blue-50 px-[9px] py-1 rounded-[7px] tracking-[.03em]">NEW</span>
 				<button
 					v-if="isStudent"
-					class="w-[38px] h-[38px] rounded-[10px] border grid place-items-center cursor-pointer transition-all hover:border-blue-300 hover:text-blue-600 [&_svg]:w-[18px] [&_svg]:h-[18px]"
-					:class="internship.liked ? 'border-blue-300 text-blue-600' : 'border-line text-muted-2'"
+					class="w-[38px] h-[38px] rounded-[10px] border grid place-items-center cursor-pointer transition-all [&_svg]:w-[18px] [&_svg]:h-[18px]"
+					:class="internship.liked
+						? 'border-blue-200 bg-blue-50 text-blue-600 hover:bg-[#fef2f2] hover:border-[#fecaca] hover:text-[#dc2626]'
+						: 'border-line text-muted-2 hover:border-blue-300 hover:text-blue-600'"
 					type="button"
 					:title="internship.liked ? 'Remove from saved' : 'Save role'"
 					@click="toggleSave"
