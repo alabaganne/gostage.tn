@@ -1,6 +1,12 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 
-@import "custom";
+@import "./custom.css";
 
 @import "tailwindcss/utilities";
+
+@layer base {
+	body {
+		@apply font-body text-ink bg-paper antialiased;
+	}
+}
