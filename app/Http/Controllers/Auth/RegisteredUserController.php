@@ -7,7 +7,6 @@ use App\Models\City;
 use App\Models\Company;
 use App\Models\Field;
 use App\Models\Student;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -110,6 +109,6 @@ class RegisteredUserController extends Controller
                 'type' => 'store',
                 'message' => 'Company profile completed. You can now post internships.'
             ])
-            : redirect(RouteServiceProvider::HOME);
+            : redirect(route('dashboard', absolute: false));
     }
 }
