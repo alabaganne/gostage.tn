@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { useForm } from '@inertiajs/vue3';
 import MainLayout from "@/Layouts/Main";
 import BreezeValidationErrors from "@/Components/ValidationErrors";
 import AppForm from "@/Components/Form";
@@ -68,7 +69,7 @@ export default {
 	},
 	data() {
 		return {
-			form: this.$inertia.form({
+			form: useForm({
 				title: "",
 				description: "",
 				attachments: [],

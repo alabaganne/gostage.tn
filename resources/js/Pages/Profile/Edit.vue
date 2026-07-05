@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import { useForm } from '@inertiajs/vue3';
 import MainLayout from "@/Layouts/Main";
 import DeleteModal from "@/Components/Modal/Delete";
 import AppForm from "@/Components/Form";
@@ -124,7 +125,7 @@ export default {
 	},
 	data() {
 		return {
-			form: this.$inertia.form({
+			form: useForm({
 				name: '',
 				email: '',
 				phone_number: '',

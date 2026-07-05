@@ -27,6 +27,6 @@
 	</component>
 </template>
 <script>
-import MainLayout from '@/Layouts/Main'; import PublicLayout from '@/Layouts/Public'; import Like from '@/Mixins/Like';
+import MainLayout from '@/Layouts/Main'; import PublicLayout from '@/Layouts/Public'; import Like from '@/mixins/like';
 export default { mixins: [Like], components: { MainLayout, PublicLayout }, props: { internship: Object }, computed: { companyInitials(){return (this.internship.company.name||'IN').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}, logoStyle(){return 'background:linear-gradient(140deg,#3b82f6,#1d4ed8)'}, workType(){return ['Remote','Hybrid','On-site'][this.internship.id%3]}, duration(){return ['8 weeks','12 weeks','16 weeks','3–6 months'][this.internship.id%4]}, payLabel(){return ['$24/hr','$28/hr','2,000 DT/mo','Unpaid'][this.internship.id%4]}, skills(){return this.internship.skills?.length ? this.internship.skills.map(s=>s.name||s) : ['Laravel','Vue','SQL','Teamwork']}, responsibilities(){return ['Build production-ready features with the engineering team','Collaborate with product and design on user-facing workflows','Write clean, documented code and participate in reviews']}, requirements(){return ['Student or recent graduate in a relevant field','Comfortable with the core tools listed for this role','Curious, reliable, and ready to learn fast']} } }
 </script>

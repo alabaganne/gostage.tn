@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Like from '@/Mixins/Like'
+import Like from '@/mixins/like'
 export default {
 	mixins: [Like],
 	props: { internship: Object, full: { type: Boolean, default: true }, truncateTitle: { type: Boolean, default: false } },

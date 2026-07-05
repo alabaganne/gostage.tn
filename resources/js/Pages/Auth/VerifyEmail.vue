@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { useForm } from '@inertiajs/vue3';
     import BreezeButton from '@/Components/Breeze/Button'
     import BreezeGuestLayout from "@/Layouts/Guest"
 
@@ -35,7 +36,7 @@
 
         data() {
             return {
-                form: this.$inertia.form()
+                form: useForm()
             }
         },
 

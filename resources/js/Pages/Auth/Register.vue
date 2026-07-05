@@ -123,6 +123,7 @@
 </template>
 
 <script>
+import { useForm } from '@inertiajs/vue3';
     import BreezeGuestLayout from '@/Layouts/Guest'
     import BreezeValidationErrors from '@/Components/ValidationErrors'
 
@@ -133,7 +134,7 @@
         data() {
             return {
                 acceptedTerms: true,
-                form: this.$inertia.form({
+                form: useForm({
                     account_type: 'student',
                     name: '',
                     email: '',

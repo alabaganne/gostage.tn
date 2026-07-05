@@ -14,6 +14,7 @@
 	</div>
 </template>
 <script>
+import { useForm } from '@inertiajs/vue3';
 import BreezeGuestLayout from '@/Layouts/Guest'; import BreezeInput from '@/Components/Breeze/Input'; import BreezeCheckbox from '@/Components/Breeze/Checkbox'; import BreezeValidationErrors from '@/Components/ValidationErrors'
-export default { layout: BreezeGuestLayout, components: { BreezeInput, BreezeCheckbox, BreezeValidationErrors }, props: { canResetPassword: Boolean, status: String }, data() { return { form: this.$inertia.form({ email: 'student@example.com', password: 'password', remember: false }) } }, methods: { submit() { this.form.transform(data => ({ ...data, remember: this.form.remember ? 'on' : '' })).post(this.route('login'), { onFinish: () => this.form.reset('password') }) } } }
+export default { layout: BreezeGuestLayout, components: { BreezeInput, BreezeCheckbox, BreezeValidationErrors }, props: { canResetPassword: Boolean, status: String }, data() { return { form: useForm({ email: 'student@example.com', password: 'password', remember: false }) } }, methods: { submit() { this.form.transform(data => ({ ...data, remember: this.form.remember ? 'on' : '' })).post(this.route('login'), { onFinish: () => this.form.reset('password') }) } } }
 </script>
