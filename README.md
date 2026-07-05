@@ -116,5 +116,5 @@ served the screens: `likes` acts as the saved-internships pivot, attachments liv
 columns on internships/applications, messaging is user-to-user (`messages.from_id/to_id`),
 and company identity (name/email) lives on the owning `users` row. Candidates for a future
 pass: dedicated `application_events` timeline rows, `educations`/`experiences`/
-`profile_links` tables for richer student profiles, and notification/privacy preferences
-behind the settings toggles.
+`profile_links` tables for richer student profiles, notification/privacy preferences,
+and skill CRUD (the skills catalog is read-only for now).

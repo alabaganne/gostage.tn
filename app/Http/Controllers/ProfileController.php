@@ -50,11 +50,8 @@ class ProfileController extends Controller
 
     public function edit()
     {
-        return Inertia::render('Profile/Edit', [
-            'fields' => Field::all(),
-            'cities' => City::all(),
-            'profile_info' => auth()->user(),
-        ]);
+        // The settings screen supersedes the old profile edit form.
+        return redirect()->route('settings');
     }
 
     public function update(Request $request)

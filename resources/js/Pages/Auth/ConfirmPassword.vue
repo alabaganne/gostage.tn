@@ -1,56 +1,44 @@
-<template>
-    <div class="mb-4 text-sm text-gray-600">
-        This is a secure area of the application. Please confirm your password before continuing.
-    </div>
-
-    <breeze-validation-errors class="mb-4" />
-
-    <form @submit.prevent="submit">
-        <div>
-            <breeze-label for="password" value="Password" />
-            <breeze-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" autofocus />
-        </div>
-
-        <div class="flex justify-end mt-4">
-            <breeze-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Confirm
-            </breeze-button>
-        </div>
-    </form>
-</template>
-
-<script>
+<script setup>
 import { useForm } from '@inertiajs/vue3';
-    import BreezeButton from '@/Components/Breeze/Button'
-    import BreezeGuestLayout from "@/Layouts/Guest"
-    import BreezeInput from '@/Components/Breeze/Input'
-    import BreezeLabel from '@/Components/Breeze/Label'
-    import BreezeValidationErrors from '@/Components/ValidationErrors'
+import AuthSplit from '@/Layouts/AuthSplit.vue';
 
-    export default {
-        layout: BreezeGuestLayout,
+defineOptions({
+	layout: (_h, page) => page,
+});
 
-        components: {
-            BreezeButton,
-            BreezeInput,
-            BreezeLabel,
-            BreezeValidationErrors,
-        },
+const form = useForm({ password: '' });
 
-        data() {
-            return {
-                form: useForm({
-                    password: '',
-                })
-            }
-        },
-
-        methods: {
-            submit() {
-                this.form.post(this.route('password.confirm'), {
-                    onFinish: () => this.form.reset(),
-                })
-            }
-        }
-    }
+const submit = () =>
+	form.post(route('password.confirm'), {
+		onFinish: () => form.reset(),
+	});
 </script>
+
+<template>
+	<AuthSplit
+		headline="Just making sure it's you."
+		copy="You're entering a secure area of the app, so we need your password one more time."
+		:bullets="['Your session stays active', 'This only takes a second']"
+	>
+		<h1 class="font-display text-[30px] font-semibold mb-2">Confirm password</h1>
+		<p class="text-muted text-[15.5px] mb-[30px]">This is a secure area of your account. Please confirm your password before continuing.</p>
+
+		<form @submit.prevent="submit">
+			<div class="mb-6">
+				<label class="block text-[13px] font-semibold mb-[7px] text-ink-700">Password</label>
+				<input v-model="form.password" class="fld !py-[13px]" type="password" placeholder="••••••••" required autofocus autocomplete="current-password">
+				<div v-if="form.errors.password" class="text-xs text-[#dc2626] mt-[7px]">{{ form.errors.password }}</div>
+			</div>
+
+			<button class="w-full justify-center inline-flex items-center gap-2.5 font-semibold text-base px-7 py-4 rounded-[13px] bg-blue-600 text-white hover:bg-blue-700 transition-colors" type="submit" :disabled="form.processing">
+				Confirm
+			</button>
+		</form>
+
+		<template #stats>
+			<div><b>1k+</b><span>Students</span></div>
+			<div><b>250+</b><span>Open roles</span></div>
+			<div><b>100+</b><span>Companies</span></div>
+		</template>
+	</AuthSplit>
+</template>
