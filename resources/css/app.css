@@ -69,6 +69,17 @@
 	.chip {
 		@apply border-line bg-white text-ink-700 hover:border-blue-300;
 	}
+	.ck {
+		@apply appearance-none w-[18px] h-[18px] border-[1.5px] border-line rounded-[5px] cursor-pointer shrink-0 relative transition-all;
+	}
+	.ck:checked {
+		@apply bg-blue-600 border-blue-600;
+	}
+	.ck:checked::after {
+		content: "";
+		@apply absolute left-[5px] top-[1.5px] w-[5px] h-[9px] border-solid border-white rotate-45;
+		border-width: 0 2px 2px 0;
+	}
 	.snav button {
 		@apply flex items-center gap-[11px] px-[13px] py-[11px] rounded-[11px] border-0 bg-transparent font-body text-[14.5px] font-semibold text-muted cursor-pointer text-left transition-colors hover:bg-white hover:text-ink;
 	}
