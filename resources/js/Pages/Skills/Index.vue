@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-	<div class="px-10 pt-[34px] pb-14 w-full max-w-[1080px]">
+	<div class="px-10 pt-[34px] pb-14 w-full max-w-[1080px] mx-auto">
 		<div class="mb-6">
 			<span class="block font-display text-[12.5px] font-semibold tracking-[.18em] uppercase text-blue-600 mb-2">Catalog</span>
 			<h1 class="font-display text-[32px] font-semibold tracking-[-.02em]">Skills</h1>

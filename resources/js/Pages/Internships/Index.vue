@@ -100,7 +100,7 @@ const toggle = (key, id) => {
 		</div>
 	</section>
 
-	<div :class="authed ? 'px-10 pt-[30px] pb-[50px] w-full' : 'max-w-wrap mx-auto px-7 w-full'">
+	<div :class="authed ? 'px-10 pt-[30px] pb-[50px] w-full max-w-wrap mx-auto' : 'max-w-wrap mx-auto px-7 w-full'">
 		<!-- Workspace header (internships.html) -->
 		<template v-if="authed">
 			<div class="mb-[22px]">

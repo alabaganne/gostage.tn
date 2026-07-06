@@ -16,7 +16,7 @@ const meta = computed(() => props.fields.meta ?? props.fields);
 </script>
 
 <template>
-	<div class="px-10 pt-[34px] pb-14 w-full max-w-[1080px]">
+	<div class="px-10 pt-[34px] pb-14 w-full max-w-[1080px] mx-auto">
 		<div class="flex items-end justify-between flex-wrap gap-4 mb-6">
 			<div>
 				<span class="block font-display text-[12.5px] font-semibold tracking-[.18em] uppercase text-blue-600 mb-2">Catalog</span>

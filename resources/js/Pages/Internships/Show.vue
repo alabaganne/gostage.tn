@@ -68,7 +68,7 @@ const toggleLike = () => {
 
 <template>
 	<!-- Breadcrumb -->
-	<div :class="user ? 'px-10 pt-7 pb-14 w-full' : ''">
+	<div :class="user ? 'px-10 pt-7 pb-14 w-full max-w-wrap mx-auto' : ''">
 		<template v-if="!user">
 			<section class="bg-white border-b border-line pt-[26px]">
 				<div class="max-w-wrap mx-auto px-7">

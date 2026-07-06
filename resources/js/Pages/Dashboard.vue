@@ -84,7 +84,7 @@ const cards = computed(() =>
 </script>
 
 <template>
-	<div class="px-10 pt-[34px] pb-[50px] w-full">
+	<div class="px-10 pt-[34px] pb-[50px] w-full max-w-wrap mx-auto">
 		<div class="flex items-end justify-between flex-wrap gap-4 mb-7">
 			<div>
 				<span class="block font-display text-[12.5px] font-semibold tracking-[.18em] uppercase text-blue-600 mb-2">Overview</span>
@@ -112,7 +112,7 @@ const cards = computed(() =>
 		</div>
 
 		<!-- TWO COL -->
-		<div class="grid grid-cols-[1.7fr_1fr] gap-4 items-start max-[980px]:grid-cols-1">
+		<div class="grid gap-4 items-start max-[980px]:grid-cols-1" :class="recommended.length ? 'grid-cols-[1.7fr_1fr]' : 'grid-cols-1'">
 			<!-- recent applications -->
 			<section class="bg-white border border-line rounded-[18px] overflow-hidden">
 				<div class="flex items-center justify-between px-[22px] py-5 border-b border-line-2">
@@ -148,7 +148,7 @@ const cards = computed(() =>
 			</section>
 
 			<!-- right column -->
-			<div class="flex flex-col gap-4">
+			<div v-if="recommended.length" class="flex flex-col gap-4">
 				<!-- recommended -->
 				<section v-if="recommended.length" class="bg-white border border-line rounded-[18px] overflow-hidden">
 					<div class="flex items-center justify-between px-[22px] py-5 border-b border-line-2">

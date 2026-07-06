@@ -59,7 +59,7 @@ const strength = computed(() =>
 </script>
 
 <template>
-	<div class="px-10 pt-[30px] pb-16 w-full max-w-[1120px]">
+	<div class="px-10 pt-[30px] pb-16 w-full max-w-[1120px] mx-auto">
 		<div class="flex items-end justify-between flex-wrap gap-4 mb-6">
 			<div>
 				<span class="block font-display text-[12.5px] font-semibold tracking-[.18em] uppercase text-blue-600 mb-2">Account</span>

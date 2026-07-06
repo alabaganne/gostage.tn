@@ -36,7 +36,7 @@ const initials = computed(() =>
 </script>
 
 <template>
-	<div class="px-10 pt-7 pb-16 w-full max-w-[1120px]">
+	<div class="px-10 pt-7 pb-16 w-full max-w-[1120px] mx-auto">
 		<div class="flex items-center gap-2 text-[13.5px] text-muted font-medium mb-[22px] [&_svg]:w-3.5 [&_svg]:h-3.5 [&_svg]:text-muted-2">
 			<Link class="hover:text-blue-700" :href="route('students.index')">Students</Link>
 			<span class="contents" v-html="icons.chevron"></span>

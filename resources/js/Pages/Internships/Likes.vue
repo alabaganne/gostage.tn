@@ -19,7 +19,7 @@ const icons = {
 </script>
 
 <template>
-	<div class="px-10 pt-[30px] pb-[50px] w-full">
+	<div class="px-10 pt-[30px] pb-[50px] w-full max-w-wrap mx-auto">
 		<div class="flex items-end justify-between flex-wrap gap-4 mb-6">
 			<div>
 				<span class="block font-display text-[12.5px] font-semibold tracking-[.18em] uppercase text-blue-600 mb-2">Your shortlist</span>

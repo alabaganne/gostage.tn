@@ -21,7 +21,7 @@ const icons = {
 </script>
 
 <template>
-	<div class="px-10 pt-7 pb-14 w-full">
+	<div class="px-10 pt-7 pb-14 w-full max-w-wrap mx-auto">
 		<div class="flex items-center gap-2 text-[13.5px] text-muted font-medium mb-[22px] [&_svg]:w-3.5 [&_svg]:h-3.5 [&_svg]:text-muted-2">
 			<Link class="hover:text-blue-700" :href="route('internships.index')">Internships</Link>
 			<span class="contents" v-html="icons.chevron"></span>
