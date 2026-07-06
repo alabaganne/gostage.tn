@@ -141,7 +141,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
     Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
 	// Notifications
-	Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 	Route::get('/notifications/clear', [NotificationController::class, 'clear'])->name('notifications.clear');
     Route::post('/notifications/{notification}', [NotificationController::class, 'store'])->name('notifications.store');
 });

@@ -14,6 +14,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Faker\Factory as FakerFactory;
 
 class DatabaseSeeder extends Seeder
@@ -96,14 +97,41 @@ class DatabaseSeeder extends Seeder
             $internships->push($internship);
         }
 
+        $applications = collect();
         foreach ($internships->take(4) as $i => $internship) {
-            Application::create(['student_id' => $student->id, 'internship_id' => $internship->id, 'company_id' => $internship->company_id, 'cover_letter' => 'I am excited about this role and believe my Laravel/Vue background makes me a strong fit.', 'message' => 'Available to start immediately and happy to interview this week.', 'status' => ['interview', 'review', 'submitted', 'offer'][$i]]);
+            $applications->push(Application::create(['student_id' => $student->id, 'internship_id' => $internship->id, 'company_id' => $internship->company_id, 'cover_letter' => 'I am excited about this role and believe my Laravel/Vue background makes me a strong fit.', 'message' => 'Available to start immediately and happy to interview this week.', 'status' => ['interview', 'review', 'submitted', 'offer'][$i]]));
         }
         $student->likes()->sync($internships->slice(1, 5)->pluck('id'));
 
         foreach ($companies->take(4) as $company) {
             Message::create(['from_id' => $company->user->id, 'to_id' => $studentUser->id, 'text' => 'Hi Ala, thanks for applying. Your profile looks strong — are you available for a short call this week?']);
             Message::create(['from_id' => $studentUser->id, 'to_id' => $company->user->id, 'text' => 'Hi, yes absolutely. I am available tomorrow afternoon or Thursday morning.']);
+        }
+
+        // Same payload shape as App\Notifications\{ApplicationSubmitted,ApplicationReviewed}.
+        foreach ($applications as $i => $application) {
+            DB::table('notifications')->insert([
+                'id' => (string) Str::uuid(),
+                'type' => \App\Notifications\ApplicationSubmitted::class,
+                'notifiable_type' => User::class,
+                'notifiable_id' => $application->company->user->id,
+                'data' => json_encode(['title' => "{$studentUser->name}'s Application", 'body' => "<span>{$studentUser->name}</span> has applied to <span>{$application->internship->title}</span>.", 'action' => "/applications/{$application->id}"]),
+                'read_at' => $i > 1 ? now()->subDays($i) : null,
+                'created_at' => now()->subDays($i)->subHours(2),
+                'updated_at' => now()->subDays($i)->subHours(2),
+            ]);
+        }
+        foreach ($applications->filter(fn ($application) => $application->status !== 'submitted')->values() as $i => $application) {
+            DB::table('notifications')->insert([
+                'id' => (string) Str::uuid(),
+                'type' => \App\Notifications\ApplicationReviewed::class,
+                'notifiable_type' => User::class,
+                'notifiable_id' => $studentUser->id,
+                'data' => json_encode(['title' => "{$application->company->user->name}'s Reply", 'body' => "<span>{$application->company->user->name}</span> has reviewed your application for <span>{$application->internship->title}</span>.", 'action' => "/applications/{$application->id}"]),
+                'read_at' => $i > 0 ? now()->subDays($i) : null,
+                'created_at' => now()->subDays($i)->subMinutes(40),
+                'updated_at' => now()->subDays($i)->subMinutes(40),
+            ]);
         }
 
         Student::factory(18)->create()->each(function ($profile) use ($password, $faker) {

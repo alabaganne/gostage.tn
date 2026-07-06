@@ -62,7 +62,7 @@ class ApplicationReviewed extends Notification
     {
         return [
             'title' => "{$this->application->company->user->name}'s Reply",
-            'body' => "<span class='text-gray-900 font-medium'>{$this->application->company->user->name}</span> has reviewed your application for <span class='text-gray-900 font-medium'>{$this->application->internship->title}",
+            'body' => "<span>{$this->application->company->user->name}</span> has reviewed your application for <span>{$this->application->internship->title}</span>.",
             'action' => "/applications/{$this->application->id}",
         ];
     }

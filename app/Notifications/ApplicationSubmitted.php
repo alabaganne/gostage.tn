@@ -66,7 +66,7 @@ class ApplicationSubmitted extends Notification
     {
         return [
             'title' => "{$this->application->student->user->name}'s Application",
-            'body' => "<span class='text-gray-900 font-medium'>{$this->application->student->user->name}</span> has applied to <span class='text-gray-900 font-medium'>{$this->application->internship->title}</span>.",
+            'body' => "<span>{$this->application->student->user->name}</span> has applied to <span>{$this->application->internship->title}</span>.",
             'action' => "/applications/{$this->application->id}"
         ];
     }
