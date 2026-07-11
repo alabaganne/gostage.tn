@@ -67,10 +67,14 @@ watch(() => props.selectedContact?.messages?.length, scrollToBottom);
 
 onMounted(() => {
 	scrollToBottom();
-	if (!window.Echo || !me.value) return;
-	window.Echo.private('user.' + me.value.id).listen('.messages', () => {
-		if (route().current('messages.index')) router.reload();
-	});
+
+	// Realtime messaging is currently disabled.
+	// Keep this Echo listener commented out so it can be restored later after
+	// broadcast/WebSocket configuration is available again.
+	// if (!window.Echo || !me.value) return;
+	// window.Echo.private('user.' + me.value.id).listen('.messages', () => {
+	// 	if (route().current('messages.index')) router.reload();
+	// });
 });
 </script>
 
