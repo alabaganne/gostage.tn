@@ -243,3 +243,9 @@ For support and questions:
 ---
 
 **Built with ❤️ for the Tunisian internship ecosystem**
+
+## Demo
+
+[Open the demo](https://internly.alabaganne.com).
+
+![Internly screenshot](https://raw.githubusercontent.com/alabaganne/Portfolio/main/public/projects/internly-demo.png)
