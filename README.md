@@ -1,12 +1,8 @@
-# Stagi.tn - Internship Management Platform
+# Internly - Internship Management Platform
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel">
-</p>
+## About Internly
 
-## About Stagi.tn
-
-Stagi.tn is a comprehensive internship management platform designed for the Tunisian market. It connects students, companies, and university supervisors to streamline the internship application and management process.
+Internly is a comprehensive internship management platform designed for the Tunisian market. It connects students, companies, and university supervisors to streamline the internship application and management process.
 
 ### Key Features
 
@@ -61,7 +57,7 @@ Before running this application, make sure you have the following installed:
 
 ```bash
 git clone <repository-url>
-cd stagi.tn
+cd Internly
 ```
 
 ### 2. Install PHP Dependencies
@@ -204,7 +200,7 @@ When migrating to the latest Laravel version, consider the following:
 ## Project Structure
 
 ```
-stagi.tn/
+Internly/
 ├── app/
 │   ├── Http/Controllers/     # Application controllers
 │   ├── Models/              # Eloquent models
